@@ -33,6 +33,7 @@ Depois abra `http://localhost:8731/`.
 | `og.png` | Cartão de compartilhamento (1200×630) para redes sociais |
 | `make-og.ps1` | Gera o `og.png` (rode se quiser recriar o cartão) |
 | `PUBLICAR-E-CRESCER.md` | **Guia completo**: hospedagem grátis, SEO, backlinks, parcerias |
+| `CONTRIBUTING.md` | Como contribuir: fluxo, padrões de código e checklist de PR |
 
 ---
 

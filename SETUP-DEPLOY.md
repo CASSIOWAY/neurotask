@@ -30,6 +30,18 @@ git add .
 git commit -m "NeuroTask MVP: micro-desafios + recompensas + SEO"
 ```
 
+> **Atalho (recomendado):** o script `publish.ps1` faz tudo isso **e** cria o
+> repositório no GitHub e já dá o push — sem precisar digitar comandos. Ele usa o
+> token por cabeçalho temporário (não grava no `.git/config`):
+>
+> ```powershell
+> .\publish.ps1 -Token "ghp_xxx" -User "seu-usuario"
+> # ou, para digitar sem mostrar na tela:
+> .\publish.ps1
+> ```
+>
+> Depois rode o **Passo 3** (Secrets) para ativar o deploy automático.
+
 ### Passo 2 — Criar o repositório no GitHub
 
 1. Acesse https://github.com/new

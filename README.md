@@ -1,5 +1,11 @@
 # NeuroTask · HabitFlow
 
+[![Deploy Netlify](https://github.com/SEU-USUARIO/neurotask/actions/workflows/deploy-netlify.yml/badge.svg)](https://github.com/SEU-USUARIO/neurotask/actions/workflows/deploy-netlify.yml)
+[![Deploy Cloudflare Pages](https://github.com/SEU-USUARIO/neurotask/actions/workflows/deploy-cloudflare.yml/badge.svg)](https://github.com/SEU-USUARIO/neurotask/actions/workflows/deploy-cloudflare.yml)
+![HTML](https://img.shields.io/badge/HTML-E34F26?logo=html5&logoColor=white)
+![JS puro](https://img.shields.io/badge/JS-vanilla-F7DF1E?logo=javascript&logoColor=black)
+![Sem build](https://img.shields.io/badge/build-none-00E0C6)
+
 > Sistema de Execução & Micro-Recompensas baseado em dopamina.
 > Micro-desafios de **60 a 180 segundos** → checklist de 3 passos → recompensa instantânea → roleta/baú bônus → streaks.
 
@@ -16,7 +22,7 @@ Persistência via `localStorage` (funciona offline, sem cadastro).
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\serve.ps1
 ```
-Depois abra `http://localhost:8731/`.
+Depois abra `http://localhost:8732/`.
 
 ---
 

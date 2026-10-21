@@ -68,14 +68,14 @@
   ];
 
   var WHEEL_SLICES = [
-    { label: "+5 ⚡", color: "#7c5cff", kind: "points", value: 5 },
-    { label: "Cupom", color: "#00e0c6", kind: "coupon" },
-    { label: "+10 ⚡", color: "#ffc94d", kind: "points", value: 10 },
-    { label: "Insígnia", color: "#ff4d8d", kind: "badge" },
-    { label: "+15 ⚡", color: "#7c5cff", kind: "points", value: 15 },
-    { label: "Templates", color: "#00e0c6", kind: "premium" },
-    { label: "+25 ⚡", color: "#ffc94d", kind: "points", value: 25 },
-    { label: "IA 5cr", color: "#ff4d8d", kind: "premium", value: 5 }
+    { label: "+5 ⚡", color: "#7c5cff", kind: "points", value: 5, emoji: "⚡" },
+    { label: "Cupom", color: "#00e0c6", kind: "coupon", emoji: "🏷️" },
+    { label: "+10 ⚡", color: "#ffc94d", kind: "points", value: 10, emoji: "⚡" },
+    { label: "Insígnia", color: "#ff4d8d", kind: "badge", emoji: "🎖️" },
+    { label: "+15 ⚡", color: "#7c5cff", kind: "points", value: 15, emoji: "⚡" },
+    { label: "Templates", color: "#00e0c6", kind: "premium", emoji: "📦" },
+    { label: "+25 ⚡", color: "#ffc94d", kind: "points", value: 25, emoji: "⚡" },
+    { label: "IA 5cr", color: "#ff4d8d", kind: "premium", value: 5, emoji: "🤖" }
   ];
 
   var BADGES = [
@@ -257,6 +257,7 @@
     var el = document.getElementById(id);
     if (el) el.classList.add("active");
     if (id !== "screen-upgrade") stopCountdown();
+    if (id !== "screen-challenge") stopTimer();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -385,9 +386,17 @@
     $("#ring-fg").style.strokeDashoffset = String(C * (1 - frac));
   }
 
+  function stopTimer() {
+    if (active && active.interval) {
+      clearInterval(active.interval);
+      active.interval = null;
+    }
+  }
+
   function startTimer() {
-    if (active.interval) clearInterval(active.interval);
+    stopTimer();
     active.interval = setInterval(function () {
+      if (!active) { clearInterval(active.interval); return; }
       active.remaining -= 1;
       if (active.remaining <= 0) {
         active.remaining = 0;
@@ -401,7 +410,7 @@
 
   function completeChallenge() {
     if (!active) return;
-    clearInterval(active.interval);
+    stopTimer();
 
     var c = active.challenge;
     var elapsed = (Date.now() - active.startTime) / 1000;
@@ -537,37 +546,52 @@
   }
 
   function landOnSlice(slice) {
-    var title = "", desc = "";
+    var title = "", desc = "", tag = "";
     if (slice.kind === "points") {
       state.points += slice.value;
       title = "+" + slice.value + " pontos!";
       desc = "Energia extra somada ao seu saldo. Continue assim.";
+      tag = "PONTOS";
     } else if (slice.kind === "coupon") {
       var r = pickReward();
       state.rewards.unshift({ icon: "🏷️", name: "Cupom bônus: " + r.name, meta: r.meta, tier: "free" });
       title = "Cupom surpresa!";
       desc = r.name + " — " + r.meta;
+      tag = "CUPOM";
     } else if (slice.kind === "badge") {
       state.rewards.unshift({ icon: "🎖️", name: "Insígnia bônus da roleta", meta: "Coleção exclusiva", tier: "free" });
       title = "Insígnia rara!";
       desc = "Uma insígnia que poucos vão ter. Guarde no seu perfil.";
+      tag = "INSÍGNIA";
     } else {
       var p = pickReward();
       state.rewards.unshift(p);
       title = "Prêmio PRO na roleta!";
       desc = p.name + " — " + p.meta;
+      tag = "PRÊMIO PRO";
     }
     save();
     renderTopbar();
 
     $("#chest-title").textContent = title;
     $("#chest-desc").textContent = desc;
-    $("#chest-result").classList.remove("hidden");
-    $("#wheel-wrap, .wheel-wrap").forEach(function (w) { w.classList.add("hidden"); });
-    var chest = $(".chest");
+    $("#prize-emoji").textContent = slice.emoji || "🎁";
+    $("#prize-tag").textContent = tag;
+
+    // esconde a roleta e mostra o baú
+    $$(".wheel-wrap").forEach(function (w) { w.classList.add("hidden"); });
+    var result = $("#chest-result");
+    result.classList.remove("hidden");
+    result.classList.remove("revealed");
+    // força reflow para reiniciar as animações
+    void result.offsetWidth;
+    result.classList.add("revealed");
+
+    var chest = $("#chest");
     chest.classList.remove("open");
     void chest.offsetWidth;
     chest.classList.add("open");
+
     soundWin();
     vibrate([50, 40, 90]);
     confetti(90);

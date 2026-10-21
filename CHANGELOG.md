@@ -9,6 +9,19 @@ e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ---
 
+## [1.0.1] — 2026-10-21
+
+### Adicionado
+- **Baú de recompensa animado**: agora o prêmio aparece visualmente ao abrir — o ícone
+  do brinde (⚡ / 🏷️ / 🎖️ / 📦 / 🤖) sobe do baú com brilho, e o tipo do prêmio
+  (Pontos, Cupom, Insígnia, Prêmio Pro) aparece em destaque.
+
+### Corrigido
+- Timer do desafio blindado: o intervalo agora para ao sair da tela e tem proteção
+  contra execução após o encerramento (evita erros de console em sequência).
+
+---
+
 ## [1.0.0] — 2026-10-20
 
 Primeira versão pública. MVP completo do sistema de micro-desafios e recompensas,

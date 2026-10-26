@@ -9,6 +9,22 @@ e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ---
 
+## [1.0.2] — 2026-10-26
+
+### Adicionado
+- **Jornada sequencial por níveis**: 5 etapas (Semente → Faísca → Fogueira → Cometa → Supernova), cada uma desbloqueando a próxima com base na pontuação do usuário.
+- **Etapas com 3 desafios cada**: Despertar, Impulso, Foco Total, Mestre do Caos, Lenda — narrativa progressiva com tom de entretenimento.
+- **Desafios sequenciais**: dentro de cada etapa, só o próximo não-completado está liberado (os outros ficam com cadeado), criando curiosidade sobre "o que vem depois".
+- **Teaser de etapa bloqueada**: exibe o ícone, nome e requisito de nível da próxima etapa, despertando o desejo de avançar.
+- Barra de nível com progresso visual e indicação do próximo nível.
+- 15 novos desafios com copy de entretenimento e micro-missões variadas (turbo criativo, caça ao desperdício, túnel de foco, chefão da semana, missão impossível, modo mentor, supernova).
+- Desafio bônus "Roleta do Caos" para quebrar a rotina.
+
+### Alterado
+- Tela de desafios substitui a grade plana por cards de jornada (nível + etapas + desafios sequenciais).
+
+---
+
 ## [1.0.1] — 2026-10-21
 
 ### Adicionado

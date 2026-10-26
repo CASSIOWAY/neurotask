@@ -7,56 +7,345 @@
 
   /* ---------------- Dados ---------------- */
 
-  var CHALLENGES = [
+  /* ---- Níveis (progressão) ---- */
+  var LEVELS = [
+    { level: 1, name: "Semente",    icon: "🌱", min: 0 },
+    { level: 2, name: "Faísca",    icon: "✨", min: 100 },
+    { level: 3, name: "Fogueira",  icon: "🔥", min: 250 },
+    { level: 4, name: "Cometa",    icon: "☄️", min: 450 },
+    { level: 5, name: "Supernova", icon: "🌟", min: 700 }
+  ];
+
+  /* ---- Etapas (Jornada) ---- */
+  var STAGES = [
+    {
+      id: "despertar",
+      name: "Despertar",
+      icon: "🌱",
+      sub: "Saia do piloto automático",
+      desc: "Três micro-missões para provar que você consegue começar AGORA.",
+      unlockLevel: 1,
+      reward: "Roleta bônus liberada",
+      challenges: [
+        {
+          id: "despertar-1",
+          icon: "⏰",
+          title: "Modo Despertador",
+          desc: "Acorde seu cérebro em 60 segundos.",
+          time: 60,
+          steps: [
+            { t: "Levante e tome um copo d'água", h: "Hidratar acorda o corpo antes da mente." },
+            { t: "Escreva UMA coisa que faria se tivesse 2 horas livres", h: "Só uma. Isso revela o que você realmente quer." },
+            { t: "Faça 10 polichinelos ou alongue-se", h: "30 segundos de movimento mudam seu estado." }
+          ]
+        },
+        {
+          id: "despertar-2",
+          icon: "❓",
+          title: "A Pergunta de 1 Minuto",
+          desc: "Descubra o que realmente importa hoje.",
+          time: 60,
+          steps: [
+            { t: "Pergunte: 'Se só pudesse fazer UMA coisa hoje, qual seria?'", h: "Sem pensar demais. A primeira resposta é a certa." },
+            { t: "Escreva essa coisa em voz alta", h: "Falar consolida a decisão." },
+            { t: "Diga: 'vou começar em 2 minutos'", h: "A promessa curta quebra a hesitação." }
+          ]
+        },
+        {
+          id: "despertar-3",
+          icon: "💪",
+          title: "Micro-Coragem",
+          desc: "Faça a coisa que você mais vem adiando.",
+          time: 90,
+          steps: [
+            { t: "Identifique a tarefa mais adiada do seu dia", h: "Aquela que está na sua cabeça há dias." },
+            { t: "Reduza ela para um passo de 2 minutos", h: "Não 'fazer o relatório'. Abrir o documento." },
+            { t: "Faça esse micro-passo agora", h: "Só o começo. O resto flui." }
+          ]
+        }
+      ]
+    },
+    {
+      id: "impulso",
+      name: "Impulso",
+      icon: "✨",
+      sub: "Acelere e ganhe momentum",
+      desc: "Etapa 2 desbloqueada! Agora o jogo acelera.",
+      unlockLevel: 2,
+      reward: "Recompensas em dobro por 1 dia",
+      challenges: [
+        {
+          id: "impulso-1",
+          icon: "💡",
+          title: "Turbo Criativo",
+          desc: "Crie uma ideia de venda em 120 segundos.",
+          time: 120,
+          steps: [
+            { t: "Escolha 1 pessoa que você conhece e que tem um problema", h: "Amigo, colega, cliente." },
+            { t: "Escreva a oferta em 1 frase: 'Ajudo X a conseguir Y por Z'", h: "Simples e direta. Sem enfeite." },
+            { t: "Envie para 1 pessoa pedir opinião", h: "Ação real, não só na cabeça." }
+          ]
+        },
+        {
+          id: "impulso-2",
+          icon: "🕵️",
+          title: "Caça ao Desperdício",
+          desc: "Encontre dinheiro escondido em 90 segundos.",
+          time: 90,
+          steps: [
+            { t: "Abra o app do banco e role os últimos lançamentos", h: "Sem julgar. Só observe." },
+            { t: "Circule 3 gastos que você cortaria sem dor", h: "Assinaturas, delivery, compras por impulso." },
+            { t: "Escolha 1 e cancele agora", h: "Uma economia real hoje vale ouro." }
+          ]
+        },
+        {
+          id: "impulso-3",
+          icon: "⚡",
+          title: "Desafio Relâmpago",
+          desc: "3 decisões rápidas, zero hesitação.",
+          time: 60,
+          steps: [
+            { t: "Liste 3 decisões pendentes que você vem adiando", h: "Pequenas, mas que pesam." },
+            { t: "Decida cada uma em 10 segundos", h: "Regra: nunca demore mais que 10s por decisão." },
+            { t: "Execute a decisão nº 1 imediatamente", h: "Decidir sem agir é enfeitar a gaveta." }
+          ]
+        }
+      ]
+    },
     {
       id: "foco",
-      icon: "🎯",
-      title: "Preciso de Foco",
-      desc: "Trave a distração e entre em modo profundo agora.",
-      time: 120,
-      steps: [
-        { t: "Feche tudo que não é essencial", h: "Abas, notificações, celular no modo avião." },
-        { t: "Defina UMA coisa para os próximos 25 min", h: "Escreva no papel. Só uma." },
-        { t: "Comece pelo primeiro micro-passo de 2 min", h: "Não pense no projeto inteiro. Só no começo." }
+      name: "Foco Total",
+      icon: "🔥",
+      sub: "Entre no modo profundo",
+      desc: "Etapa 3! Aqui o foco vira superpoder.",
+      unlockLevel: 3,
+      reward: "Insígnia de Foco Profundo",
+      challenges: [
+        {
+          id: "foco-1",
+          icon: "🎯",
+          title: "Túnel de Foco",
+          desc: "25 minutos de trabalho profundo sem distração.",
+          time: 120,
+          steps: [
+            { t: "Feche tudo: abas, notificações, celular no modo avião", h: "Fora da vista, fora da mente." },
+            { t: "Defina UMA tarefa para os próximos 25 minutos", h: "Escreva no papel. Só uma." },
+            { t: "Comece pelo primeiro micro-passo de 2 minutos", h: "O difícil é começar. Depois o fluxo pega." }
+          ]
+        },
+        {
+          id: "foco-2",
+          icon: "🗺️",
+          title: "Dia Ideal em 60s",
+          desc: "Projete um dia perfeito e execute o 1º passo.",
+          time: 60,
+          steps: [
+            { t: "Desenhe seu dia ideal em 3 blocos: manhã, tarde, noite", h: "Papel e caneta. Sem perfeccionismo." },
+            { t: "Escolha o bloco da manhã e a tarefa nº 1 dele", h: "O começo do dia define o resto." },
+            { t: "Agende essa tarefa em um horário fixo hoje", h: "Horário fixo vence força de vontade." }
+          ]
+        },
+        {
+          id: "foco-3",
+          icon: "🛡️",
+          title: "Resistência à Distração",
+          desc: "Vença 1 tentação hoje e prove que pode.",
+          time: 90,
+          steps: [
+            { t: "Identifique sua maior fonte de distração hoje", h: "Celular? Redes? Interrupções?" },
+            { t: "Crie 1 barreira física contra ela", h: "Celular em outro cômodo, app bloqueado, porta fechada." },
+            { t: "Trabalhe 15 minutos focado e comemore", h: "15 minutos de foco real valem 2 horas de distração." }
+          ]
+        }
       ]
     },
     {
-      id: "economizar",
-      icon: "💰",
-      title: "Preciso Economizar",
-      desc: "Descubra para onde o dinheiro está escorrendo.",
-      time: 90,
-      steps: [
-        { t: "Abra o app do banco e olhe os últimos 10 lançamentos", h: "Sem julgar. Só observar." },
-        { t: "Marque 3 gastos que você cortaria sem dor", h: "Assinaturas, delivery, impulso." },
-        { t: "Agende 1 transferência automática para a poupança", h: "R$ 10 já vale. O hábito vale mais." }
+      id: "mestre",
+      name: "Mestre do Caos",
+      icon: "🌪️",
+      sub: "Transforme bagunça em sistema",
+      desc: "Etapa 4 — quase lenda. O caos aqui vira sistema.",
+      unlockLevel: 4,
+      reward: "Acesso ao Desafio Secreto",
+      challenges: [
+        {
+          id: "mestre-1",
+          icon: "🧠",
+          title: "Despejo Mental",
+          desc: "Esvazie a mente em 60 segundos.",
+          time: 60,
+          steps: [
+            { t: "Despeje TUDO que está na cabeça no papel", h: "Brain dump de 60s, sem ordem e sem filtro." },
+            { t: "Circule o que só VOCÊ pode fazer", h: "O resto delegue ou delete." },
+            { t: "Escolha a prioridade nº 1 e o horário dela", h: "Uma coisa. Um horário. Feito." }
+          ]
+        },
+        {
+          id: "mestre-2",
+          icon: "⚙️",
+          title: "Sistema Anti-Procrastinação",
+          desc: "Monte seu kit pessoal de foco.",
+          time: 120,
+          steps: [
+            { t: "Liste seus 3 maiores gatilhos de procrastinação", h: "O que te faz travar?" },
+            { t: "Crie 1 regra para cada gatilho", h: "Ex.: 'se abrir o celular, volto em 2 minutos'." },
+            { t: "Teste 1 regra agora por 10 minutos", h: "Regra não testada é só enfeite." }
+          ]
+        },
+        {
+          id: "mestre-3",
+          icon: "👹",
+          title: "Chefão: A Semana",
+          desc: "Planeje 5 dias em 180 segundos. Derrote o Chefão.",
+          time: 180,
+          steps: [
+            { t: "Escreva 1 prioridade para cada dia da semana", h: "Seg a Sex. Só uma por dia." },
+            { t: "Bloqueie o horário de cada prioridade na agenda", h: "Sem horário marcado, não acontece." },
+            { t: "Defina 1 recompensa para completar a semana", h: "O cérebro trabalha melhor com prêmio à vista." }
+          ]
+        }
       ]
     },
     {
-      id: "ideia",
-      icon: "💡",
-      title: "Criar Ideia de Venda",
-      desc: "Saia do bloqueio criativo com uma oferta concreta.",
-      time: 180,
-      steps: [
-        { t: "Escreva a dor de 1 pessoa específica em 1 frase", h: "Quem sofre? O que dói?" },
-        { t: "Liste 3 formas de resolver isso em até 7 dias", h: "Feias valem. quantidade antes de qualidade." },
-        { t: "Escolha 1 e escreva a oferta em 1 frase", h: "\"Eu ajudo X a conseguir Y por Z\"." }
-      ]
-    },
-    {
-      id: "dia",
-      icon: "🗂️",
-      title: "Organizar Meu Dia",
-      desc: "Transforme a sobrecarga em 3 prioridades claras.",
-      time: 60,
-      steps: [
-        { t: "Despeje tudo que está na sua cabeça em uma lista", h: "Brain dump de 60 segundos, sem ordem." },
-        { t: "Marque o que só VOCÊ pode fazer", h: "Delegue ou delete o resto." },
-        { t: "Escolha a prioridade nº 1 e o horário dela", h: "Uma coisa. Um horário. Feito." }
+      id: "lenda",
+      name: "Lenda",
+      icon: "👑",
+      sub: "Onde poucos chegam",
+      desc: "Etapa final. Desafios que transformam hábito em identidade.",
+      unlockLevel: 5,
+      reward: "Título de Supernova + recompensas exclusivas",
+      challenges: [
+        {
+          id: "lenda-1",
+          icon: "🚀",
+          title: "Missão Impossível",
+          desc: "O maior desafio do dia. Você topa?",
+          time: 180,
+          steps: [
+            { t: "Escolha a coisa que você mais adia há semanas", h: "Aquela que dá frio na barriga." },
+            { t: "Divida em 5 micro-passos de 5 minutos", h: "Impossível vira só mais um passo." },
+            { t: "Faça o primeiro agora", h: "Começou é 50% do caminho." }
+          ]
+        },
+        {
+          id: "lenda-2",
+          icon: "🧙",
+          title: "Modo Mentor",
+          desc: "Ensinar é a prova máxima de que você domina.",
+          time: 120,
+          steps: [
+            { t: "Escolha algo que você aprendeu e pode ensinar", h: "Pode ser simples. Simples é útil." },
+            { t: "Explique em 3 frases para alguém (ou para o espelho)", h: "Se não consegue explicar simples, não entendeu." },
+            { t: "Envie esse ensinamento para 1 pessoa", h: "Conhecimento compartilhado multiplica." }
+          ]
+        },
+        {
+          id: "lenda-3",
+          icon: "🌟",
+          title: "Supernova",
+          desc: "Desafio secreto: crie o seu próprio micro-desafio.",
+          time: 180,
+          steps: [
+            { t: "Pense em 1 área da sua vida que merece um empurrão", h: "Saúde, dinheiro, relacionamento, trabalho..." },
+            { t: "Crie um micro-desafio de 3 passos para ela", h: "Você é o mestre agora." },
+            { t: "Combine consigo: quando e onde vai fazer", h: "Compromisso marcado vira hábito." }
+          ]
+        }
       ]
     }
   ];
+
+  /* ---- Desafio bônus (surpresa) ---- */
+  var BONUS_CHALLENGE = {
+    id: "bonus-caos",
+    icon: "🎲",
+    title: "Roleta do Caos",
+    desc: "Um desafio aleatório para quebrar a rotina.",
+    time: 60,
+    steps: [
+      { t: "Escolha um número de 1 a 10 agora", h: "Sem pensar demais." },
+      { t: "Faça esse número de polichinelos, agachamentos ou alongamentos", h: "Sua energia muda com movimento." },
+      { t: "Escreva 1 coisa que ficou clara depois do movimento", h: "Mente parada não resolve; corpo em movimento clareia." }
+    ]
+  };
+
+  var FRASES_DE_EFEITO = [
+    "Mandou bem! 🚀",
+    "Isso foi quase mágico. ✨",
+    "Seu cérebro agradece. 🧠",
+    "Pequeno passo, grande vitória. 🏆",
+    "Você está em chamas! 🔥",
+    "Imparável. ⚡",
+    "Até o próximo nível. 🎮",
+    "Modo lenda ativado. 👑"
+  ];
+
+  function fraseDeEfeito() {
+    return FRASES_DE_EFEITO[(Math.random() * FRASES_DE_EFEITO.length) | 0];
+  }
+
+  function getLevel(points) {
+    var current = LEVELS[0];
+    for (var i = 0; i < LEVELS.length; i++) {
+      if (points >= LEVELS[i].min) current = LEVELS[i];
+    }
+    var next = null;
+    for (var j = 0; j < LEVELS.length; j++) {
+      if (LEVELS[j].min > points) { next = LEVELS[j]; break; }
+    }
+    var progress = next ? Math.min(100, Math.round((points - current.min) / (next.min - current.min) * 100)) : 100;
+    return { current: current, next: next, progress: progress };
+  }
+
+  /* ---------------- Jornada / níveis ---------------- */
+
+  function isChallengeCompleted(challengeId) {
+    return state.completedChallenges.indexOf(challengeId) !== -1;
+  }
+
+  function completeChallengeId(challengeId) {
+    if (isChallengeCompleted(challengeId)) return false;
+    state.completedChallenges.push(challengeId);
+    return true;
+  }
+
+  function stageDoneCount(stage) {
+    var done = 0;
+    stage.challenges.forEach(function (c) {
+      if (isChallengeCompleted(c.id)) done += 1;
+    });
+    return done;
+  }
+
+  function stageIsComplete(stage) {
+    return stage.challenges.every(function (c) { return isChallengeCompleted(c.id); });
+  }
+
+  function unlockStage(stageId) {
+    if (state.unlockedStages.indexOf(stageId) !== -1) return;
+    state.unlockedStages.push(stageId);
+    save();
+    toast("🎉 Etapa desbloqueada: " + stageId);
+    confetti(80);
+  }
+
+  function getUnlockedStages() {
+    var level = getLevel(state.points);
+    return STAGES.filter(function (s) {
+      return state.unlockedStages.indexOf(s.id) !== -1 || s.unlockLevel <= level.current.level;
+    });
+  }
+
+  function isStageUnlocked(stage) {
+    return state.unlockedStages.indexOf(stage.id) !== -1;
+  }
+
+  function getNextLockedStage() {
+    for (var i = 0; i < STAGES.length; i++) {
+      if (state.unlockedStages.indexOf(STAGES[i].id) === -1) return STAGES[i];
+    }
+    return null;
+  }
 
   var REWARD_POOL = [
     { icon: "🏷️", name: "Cupom: 15% off na loja parceira", meta: "Válido por 48h", tier: "free", w: 30 },
@@ -141,7 +430,10 @@
       unlockedBadges: [],
       refCode: null,
       referredBy: null,
-      welcomeClaimed: false
+      welcomeClaimed: false,
+      completedChallenges: [],
+      unlockedStages: ["despertar"],
+      stageUnlockedTeaser: null
     };
   }
 
@@ -293,27 +585,99 @@
     grid.innerHTML = "";
     var limitReached = !canPlay();
 
-    CHALLENGES.forEach(function (c) {
-      var btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "ch-card" + (limitReached ? " locked" : "");
-      btn.innerHTML =
-        '<span class="ch-time">' + c.time + "s</span>" +
-        '<span class="ch-ico">' + c.icon + "</span>" +
-        "<h3>" + c.title + "</h3>" +
-        "<p>" + c.desc + "</p>";
-      btn.addEventListener("click", function () {
-        if (limitReached) return;
-        soundClick();
-        startChallenge(c);
+    // Barra de nível / progresso
+    var lvl = getLevel(state.points);
+    var levelBar = document.createElement("div");
+    levelBar.className = "level-bar";
+    levelBar.innerHTML =
+      '<div class="level-info"><span class="level-icon">' + lvl.current.icon + '</span>' +
+      '<span class="level-name">Nível ' + lvl.current.level + ' · ' + lvl.current.name + '</span>' +
+      '<span class="level-points">' + state.points + " pts</span></div>" +
+      '<div class="level-progress"><div class="level-fill" style="width:' + lvl.progress + '%"></div></div>' +
+      (lvl.next ? '<div class="level-next">Próximo: ' + lvl.next.icon + ' ' + lvl.next.name + " (" + lvl.next.min + " pts)" + "</div>" : "");
+    grid.appendChild(levelBar);
+
+    // Teaser da próxima etapa bloqueada (curiosidade)
+    var nextLocked = getNextLockedStage();
+    if (nextLocked && !state.pro) {
+      var teaser = document.createElement("div");
+      teaser.className = "ch-card locked stage-teaser";
+      teaser.innerHTML =
+        '<span class="ch-ico">' + nextLocked.icon + '</span>' +
+        "<h3>" + nextLocked.name + " (bloqueada)</h3>" +
+        "<p>" + nextLocked.desc + "</p>" +
+        '<div class="teaser-lock">🔓 Alcançe o nível ' + nextLocked.unlockLevel + " para desbloquear</div>";
+      grid.appendChild(teaser);
+    }
+
+    // Etapas desbloqueadas
+    var stages = getUnlockedStages();
+    stages.forEach(function (stage) {
+      var done = stageDoneCount(stage);
+      var complete = stageIsComplete(stage);
+
+      var stageCard = document.createElement("div");
+      stageCard.className = "stage-card";
+      stageCard.innerHTML =
+        '<div class="stage-header">' +
+        '<span class="stage-ico">' + stage.icon + '</span>' +
+        '<div class="stage-info"><div class="stage-title">' + stage.name + '</div>' +
+        '<div class="stage-sub">' + stage.sub + '</div></div>' +
+        '<div class="stage-progress-chip">' + done + "/3</div></div>" +
+        '<p class="stage-desc">' + stage.desc + '</p>';
+
+      // Desafios da etapa
+      stage.challenges.forEach(function (c, idx) {
+        var doneC = isChallengeCompleted(c.id);
+        var isCurrent = (!doneC && idx === 0) || (doneC === idx && idx < stage.challenges.length);
+        var unlocked = doneC || (idx === 0) || (done === idx && idx < stage.challenges.length);
+        // só libera o próximo não-completado
+        var reallyUnlocked = unlocked && (idx === 0 || isChallengeCompleted(stage.challenges[idx - 1].id));
+
+        stageCard.innerHTML +=
+          '<div class="step-card' + (doneC ? " done" : "") + (reallyUnlocked && !limitReached ? "" : " locked") + '">' +
+          '<span class="step-num">' + (idx + 1) + '</span>' +
+          '<span class="step-ico">' + c.icon + '</span>' +
+          '<div class="step-info"><div class="step-title">' + c.title + '</div>' +
+          '<div class="step-desc">' + c.desc + '</div></div>' +
+          '<span class="step-time">' + c.time + "s</span>" +
+          (doneC ? '<span class="step-ok">✓</span>' : (!reallyUnlocked ? '<span class="step-lock">🔒</span>' : '')) +
+          '</div>';
       });
-      grid.appendChild(btn);
+
+      stageCard.innerHTML +=
+        (complete ? '<div class="stage-complete">✅ Etapa completa! ' + stage.reward + '</div>' :
+          '<div class="stage-next">Próximo desafio: ' + (stage.challenges[done] ? stage.challenges[done].title : '—') + '</div>');
+
+      grid.appendChild(stageCard);
     });
 
     var remaining = state.pro ? "ilimitados" : Math.max(0, FREE_DAILY_LIMIT - state.challengesToday);
     $("#daily-note").textContent = state.pro
       ? "Plano Pro ativo — desafios ilimitados hoje."
       : "Você tem " + remaining + " micro-desafio(s) grátis restante(s) hoje. Pro libera ilimitado.";
+
+    // Evento de clique nos desafios da etapa
+    $$(".step-card").forEach(function (card) {
+      if (card.classList.contains("locked") || card.classList.contains("done")) return;
+      var title = card.querySelector(".step-title").textContent;
+      var stageCard = card.closest ? card.closest(".stage-card") : null;
+      var challenge = null;
+      if (stageCard) {
+        var stageName = stageCard.querySelector(".stage-title").textContent;
+        var foundStage = STAGES.find(function (s) { return s.name === stageName; });
+        if (foundStage) {
+          challenge = foundStage.challenges.find(function (c) { return c.title === title; });
+        }
+      }
+      card.addEventListener("click", function () {
+        if (limitReached) return;
+        if (!challenge) return;
+        soundClick();
+        startChallenge(challenge);
+      });
+      card.style.cursor = "pointer";
+    });
   }
 
   /* ---------------- Execução do desafio ---------------- */
@@ -424,6 +788,18 @@
     state.challengesToday += 1;
     state.totalCompleted += 1;
     state.pendingSpins += 1;
+
+    // Marca o desafio como concluído na jornada
+    var justCompleted = completeChallengeId(c.id);
+    var stage = STAGES.find(function (s) {
+      return s.challenges.some(function (x) { return x.id === c.id; });
+    });
+    if (justCompleted && stage && stageIsComplete(stage)) {
+      // Desbloqueia a próxima etapa na ordem
+      var idx = STAGES.indexOf(stage);
+      var nextStage = STAGES[idx + 1];
+      if (nextStage) unlockStage(nextStage.id);
+    }
 
     var reward = pickReward();
     state.rewards.unshift(reward);

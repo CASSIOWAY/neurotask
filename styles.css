@@ -550,8 +550,69 @@ h1,h2,h3,.brand-name,.pc-val,.timer-num{font-family:"Space Grotesk","Inter",sans
 .upgrade-actions{display:grid;gap:12px;text-align:center}
 .upgrade-fine{text-align:center;color:var(--muted);font-size:.8rem;margin-top:14px}
 
+/* ============================================================
+   Jornada / níveis
+   ============================================================ */
+.level-bar{
+  background:linear-gradient(135deg,rgba(124,92,255,.14),rgba(0,224,198,.1));
+  border:1px solid rgba(124,92,255,.3);border-radius:var(--r);
+  padding:18px;margin-bottom:22px;display:flex;flex-direction:column;gap:10px;
+}
+.level-info{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.level-icon{font-size:2rem}
+.level-name{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:1.1rem}
+.level-points{margin-left:auto;font-size:.85rem;color:var(--muted)}
+.level-progress{height:8px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden}
+.level-fill{height:100%;border-radius:99px;background:var(--grad);box-shadow:0 0 14px rgba(0,224,198,.6);width:0%;transition:width .6s ease}
+.level-next{color:var(--muted);font-size:.8rem;text-align:center}
+.stage-teaser{opacity:.55;pointer-events:none}
+.teaser-lock{color:var(--gold);font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:1px;margin-top:8px;display:block}
+.stage-card{
+  background:linear-gradient(160deg,var(--card),var(--bg-2));
+  border:1px solid var(--line);border-radius:var(--r);
+  padding:18px;margin-bottom:14px;position:relative;
+}
+.stage-header{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.stage-ico{font-size:1.8rem}
+.stage-info{flex:1}
+.stage-title{font-weight:700;display:block}
+.stage-sub{color:var(--muted);font-size:.8rem;display:block}
+.stage-progress-chip{
+  background:rgba(0,224,198,.15);color:#0b0b14;font-size:.75rem;font-weight:700;
+  padding:3px 10px;border-radius:999px;
+}
+.stage-desc{color:var(--muted);font-size:.9rem;margin:10px 0 14px;line-height:1.5}
+.step-card{
+  display:flex;align-items:center;gap:12px;
+  background:var(--card-2);border:1px solid rgba(255,255,255,.06);
+  border-radius:12px;padding:12px 14px;margin-bottom:8px;cursor:pointer;transition:.2s;
+}
+.step-card:hover{border-color:var(--teal);transform:translateY(-2px)}
+.step-card.done{opacity:.7;filter:grayscale(.4)}
+.step-card.locked{opacity:.5;filter:grayscale(1);cursor:not-allowed}
+.step-num{
+  width:28px;height:28px;border-radius:50%;background:var(--grad);color:#0b0b14;
+  display:grid;place-items:center;font-weight:800;font-size:.85rem;flex:none;
+}
+.step-card.done .step-num{background:var(--teal)}
+.step-ico{font-size:1.5rem;width:40px;display:inline-block;text-align:center}
+.step-info{flex:1;min-width:0}
+.step-title{font-weight:600;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.step-desc{color:var(--muted);font-size:.8rem;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.step-time{font-size:.75rem;color:var(--teal);font-weight:700;flex:none}
+.step-ok{color:var(--teal);font-weight:700;flex:none}
+.step-lock{color:var(--gold);font-weight:700;flex:none}
+.stage-complete{
+  margin-top:12px;padding:12px;background:rgba(0,224,198,.12);
+  border:1px solid rgba(0,224,198,.4);border-radius:10px;color:var(--teal);
+  font-weight:700;font-size:.88rem;text-align:center;
+}
+.stage-next{margin-top:10px;color:var(--muted);font-size:.82rem;text-align:center}
+
 @media (max-width:640px){
   .compare{grid-template-columns:1fr}
   .cd-time{font-size:1.9rem}
   .plan-price{font-size:1.6rem}
+  .level-info{flex-direction:column;align-items:flex-start;gap:6px}
+  .level-points{margin-left:0}
 }

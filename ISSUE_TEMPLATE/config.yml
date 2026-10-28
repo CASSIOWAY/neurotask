@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: "💡 Ideia de funcionalidade"
+    url: https://github.com/SEU-USUARIO/neurotask/issues/new?template=feature_request.yml
+    about: "Sugira uma melhoria para o produto"
+
+  - name: "🤝 Proposta de parceria"
+    url: https://github.com/SEU-USUARIO/neurotask/issues/new?template=partnership.yml
+    about: "Marcas, afiliados, co-marketing e licenciamento"
+
+  - name: "📖 Documentação"
+    url: https://github.com/SEU-USUARIO/neurotask/blob/main/CONTRIBUTING.md
+    about: "Antes de abrir uma issue, leia como contribuir"

@@ -1,0 +1,63 @@
+name: "🐛 Relatar bug"
+description: "Algo não está funcionando como deveria"
+title: "[BUG] "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por reportar! Preencha os campos abaixo para agilizarmos a correção.
+
+  - type: textarea
+    id: descricao
+    attributes:
+      label: "Descrição"
+      description: "O que aconteceu?"
+      placeholder: "Descreva o comportamento atual..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduzir
+    attributes:
+      label: "Passos para reproduzir"
+      description: "Como chegar no problema"
+      placeholder: |
+        1. Abra o site
+        2. Clique em ...
+        3. Observe que ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: esperado
+    attributes:
+      label: "Comportamento esperado"
+      description: "O que você esperava que acontecesse?"
+      placeholder: "Eu esperava que..."
+
+  - type: textarea
+    id: ambiente
+    attributes:
+      label: "Ambiente"
+      description: "Navegador, sistema, dispositivo"
+      placeholder: "Ex.: Chrome 128 · Windows 11 · desktop"
+
+  - type: textarea
+    id: evidencias
+    attributes:
+      label: "Screenshots / vídeo"
+      description: "Se possível, anexe evidências"
+      placeholder: "Arraste imagens aqui ou cole um link."
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: "Antes de enviar"
+      options:
+        - label: "Testei a versão mais recente do site"
+          required: true
+        - label: "Não encontrei uma issue igual já aberta"
+          required: true
+        - label: "Li o CONTRIBUTING.md"
+          required: false

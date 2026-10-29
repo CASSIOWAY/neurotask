@@ -1310,10 +1310,12 @@
   function renderReferral() {
     var code = genRefCode();
     var url = window.location.origin + window.location.pathname + "?ref=" + encodeURIComponent(code);
-    $("#ref-url").value = url;
+    var urlUsername = window.location.pathname.replace(/^\/|\/$/g, '').split('/')[1] || '';
+    var uniqueLink = urlUsername ? (window.location.origin + '/u/' + urlUsername) : url;
+    $("#ref-url").value = uniqueLink;
     var msg = state.referredBy
       ? "Você entrou pelo link de <b>" + state.referredBy + "</b>. Compartilhe o seu e ganhe Pro grátis."
-      : "Compartilhe seu link e ganhe <b>3 dias Pro</b> por amigo que ativar.";
+      : "Compartilhe seu link e ganhe <b>3 dias Pro</b> por amigo que ativar. Seu link único: <b>" + (urlUsername ? "/u/" + urlUsername : "seu link") + "</b>";
     $("#ref-count").innerHTML = msg;
   }
 
@@ -1514,6 +1516,8 @@
     animateCounters();
     handleReferral();
     renderReferral();
+    initReferral();
+    checkReferralBonus();
 
     $("#cta-start").addEventListener("click", function () {
       soundClick();
@@ -1860,15 +1864,76 @@
       ativarProPorCodigo();
     });
 
-    // renderiza QR Code quando a tela upgrade for exibida
-    var _show = show;
-    show = function (id) {
-      _show.call(this, id);
-      if (id === "screen-upgrade") {
-        renderPixQr();
-      }
     };
-  }
 
-  document.addEventListener("DOMContentLoaded", init);
+// --- INÍCIO: VIRAL LOOP NATIVE ---
+
+// 1. Extrair username da URL (/u/username)
+function getUsernameFromURL() {
+  const path = window.location.pathname.replace(/^\/|\/$/g, '');
+  const parts = path.split('/');
+  return parts[parts.length - 1] || null;
+}
+
+// 2. Inicializar referral ao carregar o app
+function initReferral() {
+  const urlUsername = getUsernameFromURL();
+  const storedReferrer = localStorage.getItem('neurotaskReferrer');
+  const refCode = localStorage.getItem('neurotaskRefCode');
+  
+  // Se vier da URL /u/username, salvar o referrer
+  if (urlUsername && !storedReferrer) {
+    localStorage.setItem('neurotaskReferrer', urlUsername);
+    localStorage.setItem('neurotaskRefCode', 'REF-' + Date.now().toString(36).toUpperCase().substr(0, 8));
+    toast("🔗 Link de rastreamento ativo: " + urlUsername);
+  }
+  
+  // Verificar se usuário atual é o referenciado (para exibir status no painel)
+  const currentUser = localStorage.getItem('neurotaskUser') || 'you';
+  const isReferenced = localStorage.getItem('neurotaskIsReferenced') === 'true';
+  
+  if (urlUsername && urlUsername !== currentUser && !isReferenced) {
+    // Este usuário foi convidado por urlUsername
+    localStorage.setItem('neurotaskIsReferenced', 'true');
+    localStorage.setItem('neurotaskReferrerUsername', urlUsername);
+    toast("👋 Olá! Você veio pelo convite de " + urlUsername + ". Complete seu primeiro desafio para ganhar 3 dias Pro grátis!");
+  }
+}
+
+// 3. Verificar se usuário completou o 1º desafio e liberar bonus referal
+function checkReferralBonus() {
+  const isReferenced = localStorage.getItem('neurotaskIsReferenced') === 'true';
+  const referrerUsername = localStorage.getItem('neurotaskReferrerUsername');
+  const challengesToday = state.challengesToday;
+  const totalCompleted = state.totalCompleted;
+  
+  // Se é usuário referenciado e completou pelo menos 1 desafio ainda não foi bonus
+  if (isReferenced && referrerUsername && totalCompleted >= 1) {
+    const bonusGiven = localStorage.getItem('neurotaskReferralBonusGiven');
+    if (!bonusGiven) {
+      // Dar 3 dias Pro grátis (ou pontos equivalentes) para o usuário referenciado
+      state.points += 100; // 100 pontos = equivalente a 3 dias Pro
+      state.challengesToday = 0; // resetar hoje para ser justo
+      save();
+      renderTopbar();
+      
+      // Notificar o referrer (guardar em localStorage para simular backend)
+      localStorage.setItem('neurotaskReferralBonusGiven', 'true');
+      localStorage.setItem('neurotaskReferralBonusTo', referrerUsername);
+      
+      toast("🎉 Bônus de indicação liberado! +100 pontos por completar seu primeiro desafio.");
+      toast("💡 Seu amigo também ganhou acesso Pro por 3 dias!");
+      
+      // Resetar o flag após bonus ser dado
+      setTimeout(() => {
+        localStorage.removeItem('neurotaskIsReferenced');
+        localStorage.removeItem('neurotaskReferrerUsername');
+      }, 300000); // 5 minutos antes de resetar
+    }
+  }
+}
+
+// --- FIM: VIRAL LOOP NATIVE ---
+
+document.addEventListener("DOMContentLoaded", init);
 })();

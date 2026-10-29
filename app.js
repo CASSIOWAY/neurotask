@@ -982,6 +982,68 @@
     }
   }
 
+  /* ---------------- Backup e Restore ---------------- */
+
+  function exportarDados() {
+    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
+    var downloadAnchorNode = document.createElement("a");
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", "neurotask-dados-" + todayStr() + ".json");
+    document.body.appendChild(downloadAnchorNode); // Required for Firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+    toast("📤 Dados exportados!");
+  }
+
+  function importarDados() {
+    var file = document.getElementById("input-importar-dados").files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      try {
+        var dados = JSON.parse(e.target.result);
+        // Confirmar com o usuário
+        if (confirm("Isso substituirá seus dados atuais. Continuar?")) {
+          // Preservar proLifetime se já tiver
+          if (state.proLifetime) dados.proLifetime = true;
+          // Mesclar dados importantes
+          for (var k in dados) {
+            if (k !== "dayStamp" && k !== "spinDayStamp" && k !== "lastActiveDay") {
+              state[k] = dados[k];
+            }
+          }
+          save();
+          renderTopbar();
+          renderPanel();
+          show("screen-hero");
+          toast("📥 Dados importados com sucesso!");
+        }
+      } catch (e) {
+        toast("❌ Erro ao ler arquivo JSON: " + e.message);
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  function setupBackupUI() {
+    $("#btn-exportar-dados").addEventListener("click", function () {
+      soundClick();
+      exportarDados();
+    });
+
+    $("#btn-importar-dados").addEventListener("click", function () {
+      soundClick();
+      document.getElementById("input-importar-dados").click();
+    });
+
+    $("#input-importar-dados").addEventListener("change", function () {
+      importarDados();
+    });
+  }
+
+  // Executar setup ao iniciar
+  setupBackupUI();
+
   /* ---------------- Painel ---------------- */
 
   function renderPanel() {

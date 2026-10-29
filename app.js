@@ -1199,6 +1199,190 @@
     $("#ref-count").innerHTML = msg;
   }
 
+  /* ---------------- DESAFIO SIMPLES (One-Click) ---------------- */
+
+  var CHALLENGES_DATA = [
+    {
+      id: "foco",
+      icon: "🎯",
+      title: "Preciso de Foco",
+      desc: "Trave a distração e entre em modo profundo agora.",
+      time: 120,
+      steps: [
+        { t: "Feche tudo que não é essencial", h: "Abas, notificações, celular no modo avião." },
+        { t: "Defina UMA coisa para os próximos 25 min", h: "Escreva no papel. Só uma." },
+        { t: "Comece pelo primeiro micro-passo de 2 min", h: "Não pense no projeto inteiro. Só no começo." }
+      ]
+    },
+    {
+      id: "economizar",
+      icon: "💰",
+      title: "Preciso Economizar",
+      desc: "Descubra para onde o dinheiro está escorrendo.",
+      time: 90,
+      steps: [
+        { t: "Abra o app do banco e olhe os últimos 10 lançamentos", h: "Sem julgar. Só observar." },
+        { t: "Marque 3 gastos que você cortaria sem dor", h: "Assinaturas, delivery, impulso." },
+        { t: "Agende 1 transferência automática para a poupança", h: "R$ 10 já vale. O hábito vale mais." }
+      ]
+    },
+    {
+      id: "ideia",
+      icon: "💡",
+      title: "Criar Ideia de Venda",
+      desc: "Saia do bloqueio criativo com uma oferta concreta.",
+      time: 180,
+      steps: [
+        { t: "Escreva a dor de 1 pessoa específica em 1 frase", h: "Quem sofre? O que dói?" },
+        { t: "Liste 3 formas de resolver isso em até 7 dias", h: "Feias valem. quantidade antes de qualidade." },
+        { t: "Escolha 1 e escreva a oferta em 1 frase", h: "\"Eu ajudo X a conseguir Y por Z\"." }
+      ]
+    },
+    {
+      id: "dia",
+      icon: "🗂️",
+      title: "Organizar Meu Dia",
+      desc: "Transforme a sobrecarga em 3 prioridades claras.",
+      time: 60,
+      steps: [
+        { t: "Despeje tudo que está na sua cabeça em uma lista", h: "Brain dump de 60 segundos, sem ordem." },
+        { t: "Marque o que só VOCÊ pode fazer", h: "Delegue ou delete o resto." },
+        { t: "Escolha a prioridade nº 1 e o horário dela", h: "Uma coisa. Um horário. Feito." }
+      ]
+    }
+  ];
+
+  var activeChallenge = null;
+
+  function renderChallengesSimple() {
+    var grid = document.getElementById("challenge-grid");
+    grid.innerHTML = "";
+    CHALLENGES_DATA.forEach(function (c) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "ch-card";
+      btn.innerHTML =
+        '<span class="ch-time">' + c.time + "s</span>" +
+        '<span class="ch-ico">' + c.icon + "</span>" +
+        "<h3>" + c.title + "</h3>" +
+        "<p>" + c.desc + "</p>";
+      btn.onclick = function () { startChallengeSimple(c); };
+      grid.appendChild(btn);
+    });
+    var daily = document.getElementById("daily-note");
+    if (daily) daily.textContent = state.pro
+      ? "Plano Pro ativo — desafios ilimitados hoje."
+      : "Você tem " + Math.max(0, FREE_DAILY_LIMIT - state.challengesToday) + " desafio(s) grátis restante(s) hoje. Pro libera ilimitado.";
+  }
+
+  function startChallengeSimple(c) {
+    activeChallenge = c;
+    document.getElementById("exec-ch-icon").textContent = c.icon;
+    document.getElementById("exec-ch-title").textContent = c.title;
+    document.getElementById("exec-ch-desc").textContent = c.desc;
+    document.getElementById("exec-timer-num").textContent = c.time;
+    document.getElementById("exec-progress-fill").style.width = "0%";
+    document.getElementById("exec-btn-complete").disabled = true;
+
+    var list = document.getElementById("exec-steps");
+    list.innerHTML = "";
+    c.steps.forEach(function (step, i) {
+      var li = document.createElement("li");
+      li.className = "step";
+      li.innerHTML =
+        '<span class="box">' + (i + 1) + "</span>" +
+        "<p>" + step.t + '<span class="hint">' + step.h + "</span></p>";
+      li.onclick = function () { toggleExecStep(i, li); };
+      list.appendChild(li);
+    });
+
+    show("screen-challenge-exec");
+    startChallengeTimerSimple(c.time);
+  }
+
+  var execTimer = null;
+  var execRemaining = 0;
+  var execDone = {};
+
+  function startChallengeTimerSimple(time) {
+    execRemaining = time;
+    document.getElementById("exec-timer-num").textContent = execRemaining;
+    execDone = {};
+    updateExecProgress();
+    if (execTimer) clearInterval(execTimer);
+    execTimer = setInterval(function () {
+      execRemaining -= 1;
+      document.getElementById("exec-timer-num").textContent = execRemaining;
+      updateExecProgress();
+      if (execRemaining <= 0) {
+        clearInterval(execTimer);
+        execTimer = null;
+        toast("⏱️ Tempo esgotado — conclua os passos para garantir a recompensa!");
+      }
+    }, 1000);
+  }
+
+  function updateExecProgress() {
+    var ring = document.getElementById("exec-ring-fg");
+    var fill = document.getElementById("exec-progress-fill");
+    var total = activeChallenge.time;
+    var frac = execRemaining / total;
+    var C = 2 * Math.PI * 52;
+    ring.style.strokeDashoffset = String(C * (1 - frac));
+    fill.style.width = Math.round((1 - frac) * 100) + "%";
+  }
+
+  function toggleExecStep(i, li) {
+    if (execDone[i]) {
+      delete execDone[i];
+      li.classList.remove("done");
+    } else {
+      execDone[i] = true;
+      li.classList.add("done");
+    }
+    updateExecCompleteBtn();
+  }
+
+  function updateExecCompleteBtn() {
+    var btn = document.getElementById("exec-btn-complete");
+    var doneCount = Object.keys(execDone).length;
+    btn.disabled = doneCount < activeChallenge.steps.length;
+  }
+
+  function completeChallengeFromScreen() {
+    if (!activeChallenge) return;
+    if (execTimer) clearInterval(execTimer);
+
+    var gained = 10 + Math.min(state.streak * 2, 10) + Math.round((execRemaining / activeChallenge.time) * 10);
+    state.points += gained;
+    state.challengesToday += 1;
+    state.totalCompleted += 1;
+    state.pendingSpins += 1;
+    save();
+
+    var reward = pickReward();
+    state.rewards.unshift(reward);
+    state.history.unshift({ when: new Date().toISOString(), title: activeChallenge.title, points: gained });
+
+    renderTopbar();
+    save();
+
+    document.getElementById("reward-title").textContent = "Micro-vitória desbloqueada!";
+    document.getElementById("reward-sub").textContent = "Você acaba de dar ao seu cérebro a dose de dopamina que faltava.";
+    document.getElementById("reward-tag").textContent = reward.tier === "premium" ? "RECOMPENSA PRO" : "RECOMPENSA";
+    document.getElementById("reward-ico").textContent = reward.icon;
+    document.getElementById("reward-name").textContent = reward.name;
+    document.getElementById("reward-meta").textContent = reward.meta;
+    document.getElementById("points-pop").textContent = "+" + gained + " ⚡";
+    document.getElementById("chest-label").textContent = "Girar Roleta de Bônus";
+
+    show("screen-reward");
+    soundWin();
+    vibrate([40, 40, 80]);
+    confetti(140);
+    activeChallenge = null;
+  }
+
   /* ---------------- Wiring ---------------- */
 
   function init() {
@@ -1302,6 +1486,27 @@
     $("#btn-pro").addEventListener("click", function () {
       soundClick();
       goUpgrade();
+    });
+
+    $("#btn-ativar-pro").addEventListener("click", function (e) {
+      e.preventDefault();
+      soundClick();
+      var email = document.getElementById("pix-email-admin").value.trim();
+      var codigo = document.getElementById("pix-code-admin").value.trim();
+      if (!email || !codigo) {
+        toast("Preencha e-mail e código");
+        return;
+      }
+      // Simples validação: se digitou, libera (você pode validar contra JSON real se quiser)
+      state.pro = true;
+      state.userEmail = email;
+      save();
+      renderTopbar();
+      renderPanel();
+      show("screen-panel");
+      soundWin();
+      confetti(160);
+      toast("🎉 Bem-vindo ao Pro! Desafios ilimitados e cashback liberados.");
     });
 
     // recalcula as etiquetas da roleta se a janela mudar de tamanho

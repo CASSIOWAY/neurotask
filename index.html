@@ -209,6 +209,38 @@
     <p class="daily-note" id="daily-note"></p>
   </section>
 
+  <!-- ================= DESAFIO EM EXECUÇÃO ================= -->
+  <section class="screen" id="screen-challenge-exec">
+    <button class="back-btn" data-back="screen-challenges" type="button">← Voltar</button>
+
+    <div class="challenge-head">
+      <div class="challenge-icon" id="exec-ch-icon">🎯</div>
+      <div>
+        <h2 class="screen-title" id="exec-ch-title">Desafio</h2>
+        <p class="screen-sub" id="exec-ch-desc"></p>
+      </div>
+    </div>
+
+    <div class="timer-wrap" style="width: 130px; height: 130px; margin: 10px auto 10px;">
+      <svg class="timer-ring" viewBox="0 0 120 120" aria-hidden="true">
+        <circle class="ring-bg" cx="60" cy="60" r="52"/>
+        <circle class="ring-fg" id="exec-ring-fg" cx="60" cy="60" r="52"/>
+      </svg>
+      <div class="timer-text">
+        <span class="timer-num" id="exec-timer-num">120</span>
+        <span class="timer-unit">segundos</span>
+      </div>
+    </div>
+
+    <div class="progress-line"><div class="progress-fill" id="exec-progress-fill"></div></div>
+
+    <ol class="steps" id="exec-steps"></ol>
+
+    <div class="challenge-actions" style="margin-top: 30px;">
+      <button class="cta-secondary" id="exec-btn-complete" type="button" disabled>Concluir &amp; Ganhar</button>
+    </div>
+  </section>
+
   <!-- ================= VISÃO / ASPIRAÇÃO ================= -->
   <section class="screen" id="screen-vision">
     <button class="back-btn" data-back="screen-hero" type="button">← Voltar</button>

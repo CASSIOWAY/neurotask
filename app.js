@@ -1515,13 +1515,17 @@
     });
 
     /* ---------------- Pix pagamento ---------------- */
-    var PIX_KEY = "03397789389";
-    var WHATSAPP = "5503397789389";
+    var PIX_KEY = "f62808ea-c9d5-4941-b752-20fe41e41e81";
+    var WHATSAPP = "5563991291661";
+
+    // Códigos de ativação válidos (adicionar manualmente quando cliente paga)
+    var PAID_CODES = [
+      { code: "NEURO-2026-10-29-ABCD", email: "cliente@exemplo.com", used: false }
+    ];
 
     function renderPixQr() {
-      var img = $("#pix-qr-img");
+      var img = document.getElementById("pix-qr-img");
       if (!img) return;
-      // Gera QR Code via API pública com a chave Pix como texto
       var url = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(PIX_KEY);
       img.src = url;
     }
@@ -1541,11 +1545,71 @@
       }
     }
 
-    function contactPix() {
+    function solicitCodigoPix() {
+      var phone = document.getElementById("pix-phone").value.trim();
+      var email = document.getElementById("pix-email").value.trim();
+
+      if (!telefone) {
+        toast("Digite seu telefone primeiro");
+        document.getElementById("pix-phone").focus();
+        return;
+      }
+      if (!email) {
+        toast("Digite seu e-mail primeiro");
+        document.getElementById("pix-email").focus();
+        return;
+      }
+
+      // Gerar código de ativação
+      var code = "NEURO-" + Date.now().toString(36).toUpperCase() + "-" + Math.random().toString(36).toUpperCase().substr(0, 4);
+      PAID_CODES.push({ code: code, email: email, telefone: phone, used: false });
+
       var msg = encodeURIComponent(
-        "Olá! Paguei a assinatura NeuroTask Pro via Pix (chave: " + PIX_KEY + "). Por favor, libere meu acesso Pro."
+        "Olá! Paguei o NeuroTask Pro via Pix.\nMeu telefone: " + phone + "\nMeu e-mail: " + email + "\nMeu código de ativação é: " + code + "\nPor favor, confirme e libere meu acesso Pro."
       );
       window.open("https://wa.me/" + WHATSAPP + "?text=" + msg, "_blank");
+
+      // Mostrar campo para digitar código recebido
+      document.getElementById("pix-code-input").style.display = "block";
+      toast("Mensagem enviada pelo WhatsApp. Aguarde o código de ativação.");
+    }
+
+    function ativarProPorCodigo() {
+      var email = document.getElementById("pix-email").value.trim();
+      var codigo = document.getElementById("pix-code").value.trim();
+
+      if (!email) {
+        toast("Digite seu e-mail primeiro");
+        return;
+      }
+      if (!codigo) {
+        toast("Digite o código de ativação");
+        return;
+      }
+
+      // Validar código
+      var encontrado = PAID_CODES.find(function (c) {
+        return c.code.toUpperCase() === codigo.toUpperCase() &&
+               c.email.toLowerCase() === email.toLowerCase() &&
+               c.used !== true;
+      });
+
+      if (!encontrado) {
+        toast("Código ou e-mail inválido. Verifique e tente novamente.");
+        return;
+      }
+
+      // Marcar como usado e ativar Pro
+      encontrado.used = true;
+      state.pro = true;
+      state.userEmail = email;
+      save();
+      renderTopbar();
+      renderPanel();
+      show("screen-panel");
+      soundWin();
+      confetti(160);
+      toast("🎉 Bem-vindo ao Pro! Desafios ilimitados e cashback liberados.");
     }
 
     $("#copy-pix").addEventListener("click", function (e) {
@@ -1554,10 +1618,16 @@
       copyPixKey();
     });
 
-    $("#btn-contact-pix").addEventListener("click", function (e) {
+    $("#btn-request-code").addEventListener("click", function (e) {
       e.preventDefault();
       soundClick();
-      contactPix();
+      solicitCodigoPix();
+    });
+
+    $("#btn-ativar-pro").addEventListener("click", function (e) {
+      e.preventDefault();
+      soundClick();
+      ativarProPorCodigo();
     });
 
     // renderiza QR Code quando a tela upgrade for exibida

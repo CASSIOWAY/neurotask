@@ -594,6 +594,35 @@ h1,h2,h3,.brand-name,.pc-val,.timer-num{font-family:"Space Grotesk","Inter",sans
 .pix-note{color:var(--muted);font-size:.82rem;margin-top:14px}
 .pix-note a{color:var(--teal);text-decoration:none;font-weight:600}
 .pix-note a:hover{text-decoration:underline}
+.pix-claim{
+  margin-top:20px;
+  padding:16px;
+  background:var(--card-2);
+  border:1px solid var(--line);
+  border-radius:12px;
+}
+.pix-claim label{
+  display:block;
+  margin-bottom:6px;
+  color:var(--muted);
+  font-size:.85rem;
+}
+.pix-claim input{
+  width:100%;
+  padding:12px 14px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:var(--bg-2);
+  color:var(--txt);
+  font-size:.9rem;
+  margin-bottom:8px;
+  box-sizing:border-box;
+}
+.pix-code-input{
+  margin-top:16px;
+  padding-top:16px;
+  border-top:1px solid var(--line);
+}
 
 /* ============================================================
    Jornada / níveis

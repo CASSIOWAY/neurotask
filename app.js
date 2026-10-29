@@ -1308,6 +1308,61 @@
     window.addEventListener("resize", function () {
       if (document.getElementById("screen-chest").classList.contains("active")) buildWheel();
     });
+
+    /* ---------------- Pix pagamento ---------------- */
+    var PIX_KEY = "03397789389";
+    var WHATSAPP = "5503397789389";
+
+    function renderPixQr() {
+      var img = $("#pix-qr-img");
+      if (!img) return;
+      // Gera QR Code via API pública com a chave Pix como texto
+      var url = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(PIX_KEY);
+      img.src = url;
+    }
+
+    function copyPixKey() {
+      var key = PIX_KEY;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(key).then(function () {
+          toast("Chave Pix copiada: " + key);
+        }, function () {
+          document.execCommand("copy");
+          toast("Chave Pix copiada: " + key);
+        });
+      } else {
+        document.execCommand("copy");
+        toast("Chave Pix copiada: " + key);
+      }
+    }
+
+    function contactPix() {
+      var msg = encodeURIComponent(
+        "Olá! Paguei a assinatura NeuroTask Pro via Pix (chave: " + PIX_KEY + "). Por favor, libere meu acesso Pro."
+      );
+      window.open("https://wa.me/" + WHATSAPP + "?text=" + msg, "_blank");
+    }
+
+    $("#copy-pix").addEventListener("click", function (e) {
+      e.preventDefault();
+      soundClick();
+      copyPixKey();
+    });
+
+    $("#btn-contact-pix").addEventListener("click", function (e) {
+      e.preventDefault();
+      soundClick();
+      contactPix();
+    });
+
+    // renderiza QR Code quando a tela upgrade for exibida
+    var _show = show;
+    show = function (id) {
+      _show.call(this, id);
+      if (id === "screen-upgrade") {
+        renderPixQr();
+      }
+    };
   }
 
   document.addEventListener("DOMContentLoaded", init);

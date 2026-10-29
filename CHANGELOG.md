@@ -9,6 +9,24 @@ e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ---
 
+## [1.0.4] — 2026-10-29
+
+### Adicionado
+- **Pagamento via Pix**: seção dedicada no paywall com QR Code estático gerado
+  automaticamente (API pública) e chave Pix `03397789389` para cópia com um clique.
+- **Botão de contato via WhatsApp**: após o pagamento, o usuário pode enviar
+  comprovante diretamente pelo WhatsApp para liberação manual do acesso Pro.
+- **Cópia rápida da chave Pix**: botão dedicado para copiar a chave para a área
+  de transferência.
+
+### Alterado
+- Paywall (tela de upgrade) agora inclui a seção "Pague via Pix" com botão de
+  contato e instruções claras para liberação dos benefícios Pro.
+- Função `show()` foi estendida para renderizar o QR Code dinamicamente ao abrir
+  a tela de upgrade.
+
+---
+
 ## [1.0.3] — 2026-10-29
 
 ### Adicionado

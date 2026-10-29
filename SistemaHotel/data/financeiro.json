@@ -1,0 +1,28 @@
+﻿{
+    "saldos_mensais":  [
+
+                       ],
+    "lancamentos":  [
+
+                    ],
+    "categorias_receita":  [
+                               "hospedagem",
+                               "cafe da manha",
+                               "estacionamento",
+                               "tour",
+                               "produtos"
+                           ],
+    "categorias_despesa":  [
+                               "pessoal",
+                               "servicos",
+                               "suprimentos",
+                               "manutencao",
+                               "impostos",
+                               "marketing",
+                               "comissao",
+                               "servico_diarista",
+                               "compras",
+                               "manutencao_predial",
+                               "outros"
+                           ]
+}

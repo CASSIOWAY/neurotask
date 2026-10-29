@@ -1,0 +1,10 @@
+# Normalização de finais de linha
+* text=auto
+
+# Scripts PowerShell: manter CRLF no Windows
+*.ps1 text eol=crlf
+
+# Binários
+*.png binary
+*.jpg binary
+*.zip binary

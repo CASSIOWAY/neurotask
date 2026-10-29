@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Controle de Fluxo - Educacenso</title>
+    <hta:application id="app" applicationname="Controle de Fluxo - Educacenso" border="thin" caption="yes" sysmenu="yes" maximizebutton="no" minimizebutton="yes" showintaskbar="yes" scroll="no" singleinstance="yes" windowstate="normal" />
+    <script language="VBScript">
+    Option Explicit
+    Dim fso, pastaAtual, caminhoCtrlIn, caminhoCtrlOut
+    Dim idReqAtual, numAlunoAtual, totalTurmaAtual, cpfAtual, turmaAtual, nomeAtual, labelTipoAtual, racaAtual, dtNascAtual, enderecoAtual, statusTexto, transporteAtual, deficienciasAtual, recursoAtual, apoioAtual
+    Dim fechando
+    Sub Window_OnLoad
+        Set fso = CreateObject("Scripting.FileSystemObject")
+        pastaAtual = Replace(document.location.pathname, "/", "\\")
+        If Left(pastaAtual, 1) = "\" Then pastaAtual = Mid(pastaAtual, 2)
+        pastaAtual = Replace(pastaAtual, "%20", " ")
+        pastaAtual = fso.GetParentFolderName(pastaAtual)
+        caminhoCtrlIn = pastaAtual & "\ctrl_in.txt"
+        caminhoCtrlOut = pastaAtual & "\ctrl_out.txt"
+        window.resizeTo 700, 490
+        window.moveTo (screen.width-700)/2, (screen.height-400)/2
+        idReqAtual = ""
+        fechando = False
+        numAlunoAtual = 0
+        totalTurmaAtual = 0
+        cpfAtual = ""
+        turmaAtual = ""
+        nomeAtual = ""
+        labelTipoAtual = "REGISTRO"
+        enderecoAtual = ""
+        AtualizarPainelInicial
+        window.focus
+        IniciarLoopLeitura
+    End Sub
+    Sub AtualizarPainelInicial
+        On Error Resume Next
+        lblCabecalho.innerText = "EDUCACENSO"
+        lblTurma.innerText = ""
+        lblAluno.innerText = "0 de 0"
+        lblNome.innerText = ""
+        lblCpf.innerText = ""
+        lblRaca.innerText = ""
+        lblDtNasc.innerText = ""
+        lblEndereco.innerText = ""
+        lblTransporte.innerText = ""
+        lblDeficiencias.innerText = ""
+        lblRecurso.innerText = ""
+        lblApoio.innerText = ""
+        lblProgresso.innerText = "Aguardando..."
+        lblPercentual.innerText = "0%"
+        barra.style.width = "0%"
+    End Sub
+    Sub IniciarLoopLeitura
+        window.setTimeout "VerificarEntrada", 80
+    End Sub
+    Sub VerificarEntrada
+        On Error Resume Next
+        If fso.FileExists(caminhoCtrlIn) Then
+            Dim fIn, linhaHTA, p
+            Set fIn = fso.OpenTextFile(caminhoCtrlIn, 1)
+            linhaHTA = Trim(fIn.ReadAll)
+            fIn.Close
+            fso.DeleteFile caminhoCtrlIn
+            If linhaHTA <> "" Then
+                p = Split(linhaHTA, "|")
+                If UCase(p(0)) = "FIM" Then
+                    lblProgresso.innerText = "Processo concluido: " & p(2) & " " & p(5) & " na " & p(4)
+                    lblPercentual.innerText = "100%"
+                    barra.style.width = "100%"
+                ElseIf UCase(p(0)) = "CLOSE" Then
+                    window.close
+                ElseIf UCase(p(0)) = "STATUS" Then
+                    If UBound(p) >= 1 Then lblProgresso.innerText = p(1)
+                Else
+                    idReqAtual = p(0)
+                    numAlunoAtual = CInt(p(1))
+                    totalTurmaAtual = CInt(p(2))
+                    cpfAtual = p(3)
+                    turmaAtual = p(4)
+                    nomeAtual = p(5)
+                    If UBound(p) >= 6 Then labelTipoAtual = p(6) Else labelTipoAtual = "REGISTRO"
+                    If UBound(p) >= 8 Then racaAtual = p(7) Else racaAtual = ""
+                    If UBound(p) >= 8 Then dtNascAtual = p(8) Else dtNascAtual = ""
+                    If UBound(p) >= 9 Then enderecoAtual = p(9) Else enderecoAtual = ""
+                    If UBound(p) >= 10 Then statusTexto = p(10) Else statusTexto = ""
+                    If UBound(p) >= 11 Then transporteAtual = p(11) Else transporteAtual = ""
+                    If UBound(p) >= 12 Then deficienciasAtual = p(12) Else deficienciasAtual = ""
+                    If UBound(p) >= 13 Then recursoAtual = p(13) Else recursoAtual = ""
+                    If UBound(p) >= 14 Then apoioAtual = p(14) Else apoioAtual = ""
+                    AtualizarPainelAluno
+                    window.blur
+                End If
+            End If
+        End If
+        IniciarLoopLeitura
+    End Sub
+    Sub AtualizarPainelAluno
+        Dim perc, ehEspeciais
+        On Error Resume Next
+        ehEspeciais = (turmaAtual = "CONFERENCIA ESPECIAIS")
+        lblCabecalho.innerText = "EDUCACENSO"
+        lblTurma.innerText = "Turma: " & turmaAtual
+        lblAluno.innerText = numAlunoAtual & " de " & totalTurmaAtual
+        lblNome.innerText = nomeAtual
+        lblCpf.innerText = cpfAtual
+        If ehEspeciais Then
+            lblRaca.innerText = "" : lblRaca.style.display = "none"
+            lblEndereco.innerText = "" : lblEndereco.style.display = "none"
+            lblDtNasc.innerText = "" : lblDtNasc.style.display = "none"
+            lblDeficiencias.innerText = deficienciasAtual : lblDeficiencias.style.display = ""
+            lblRecurso.innerText = recursoAtual : lblRecurso.style.display = ""
+            lblApoio.innerText = apoioAtual : lblApoio.style.display = ""
+        Else
+            lblRaca.innerText = racaAtual : lblRaca.style.display = ""
+            lblEndereco.innerText = enderecoAtual : lblEndereco.style.display = ""
+            lblDtNasc.innerText = dtNascAtual : lblDtNasc.style.display = ""
+            lblDeficiencias.innerText = "" : lblDeficiencias.style.display = "none"
+            lblRecurso.innerText = "" : lblRecurso.style.display = "none"
+            lblApoio.innerText = "" : lblApoio.style.display = "none"
+        End If
+        If transporteAtual <> "" Then lblTransporte.innerText = "Transporte: " & transporteAtual : lblTransporte.style.color = "#2d7d46" : If transporteAtual = "RURAL" Then lblTransporte.style.color = "#c06a1b"
+        If transporteAtual = "" Then lblTransporte.innerText = "Nao utiliza transporte" : lblTransporte.style.color = "#999"
+        If statusTexto <> "" Then
+            lblProgresso.innerText = statusTexto
+        Else
+            If totalTurmaAtual > 0 Then
+                perc = CInt((numAlunoAtual / totalTurmaAtual) * 100)
+                If perc < 0 Then perc = 0
+                If perc > 100 Then perc = 100
+                lblProgresso.innerText = perc & "% concluido"
+                lblPercentual.innerText = perc & "%"
+                barra.style.width = perc & "%"
+            Else
+                lblProgresso.innerText = "Aguardando..."
+                lblPercentual.innerText = "0%"
+                barra.style.width = "0%"
+            End If
+        End If
+    End Sub
+    Sub EnviarResposta(codigo)
+        If idReqAtual = "" Then Exit Sub
+        Dim fOut
+        Set fOut = fso.CreateTextFile(caminhoCtrlOut, True)
+        fOut.Write idReqAtual & "|" & CStr(codigo)
+        fOut.Close
+    End Sub
+    Sub btnAvancar_OnClick
+        EnviarResposta 6
+        btnAvancar.style.background="#d0d8f0"
+        window.blur()
+        CreateObject("WScript.Shell").AppActivate "Educacenso"
+    End Sub
+    Sub btnRepetir_OnClick
+        EnviarResposta 7
+        btnRepetir.style.background="#d0d8f0"
+        window.blur()
+        CreateObject("WScript.Shell").AppActivate "Educacenso"
+    End Sub
+    Sub btnVoltar_OnClick
+        EnviarResposta 9
+        btnVoltar.style.background="#d0d8f0"
+        window.blur()
+        CreateObject("WScript.Shell").AppActivate "Educacenso"
+    End Sub
+    Sub btnSair_OnClick
+        fechando = True
+        EnviarResposta 0
+        btnSair.style.background="#f0d0d0"
+        window.close
+    End Sub
+    Sub Window_OnBeforeUnload
+        If Not fechando Then
+            Dim fso2, fOut2, pastaAtual2, caminhoCtrlOut2
+            Set fso2 = CreateObject("Scripting.FileSystemObject")
+            pastaAtual2 = Replace(document.location.pathname, "/", "\\")
+            If Left(pastaAtual2, 1) = "\" Then pastaAtual2 = Mid(pastaAtual2, 2)
+            pastaAtual2 = Replace(pastaAtual2, "%20", " ")
+            pastaAtual2 = fso2.GetParentFolderName(pastaAtual2)
+            caminhoCtrlOut2 = pastaAtual2 & "\ctrl_out.txt"
+            Set fOut2 = fso2.CreateTextFile(caminhoCtrlOut2, True)
+            fOut2.Write "|0"
+            fOut2.Close
+        End If
+    End Sub
+    Sub btnCalibrar_OnClick
+        EnviarResposta 8
+        btnCalibrar.style.background="#d0d8f0"
+    End Sub
+    Sub btnPausar_OnClick
+        If btnPausar.value = "Pausar" Then
+            EnviarResposta 5
+            btnPausar.value = "Continuar"
+            btnPausar.style.borderColor="#e67e22"
+            lblProgresso.innerText = "*** PAUSADO ***"
+        Else
+            EnviarResposta 7
+            btnPausar.value = "Pausar"
+            btnPausar.style.borderColor=""
+            window.blur()
+            CreateObject("WScript.Shell").AppActivate "Educacenso"
+        End If
+    End Sub
+    Sub document_OnKeyDown
+        Dim k
+        k = window.event.keyCode
+        If window.event.ctrlKey Or window.event.altKey Or window.event.shiftKey Then Exit Sub
+        If k = 39 Then btnAvancar_OnClick  ' Seta Direita
+        If k = 37 Then btnVoltar_OnClick    ' Seta Esquerda
+        If k = 13 Then btnAvancar_OnClick    ' Enter
+        If k = 82 Then btnRepetir_OnClick    ' R
+        If k = 67 Then btnCalibrar_OnClick    ' C
+        If k = 27 Then btnSair_OnClick       ' Esc
+        If k = 80 Then btnPausar_OnClick     ' P
+    End Sub
+    </script>
+<style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { margin:0; font-family:Segoe UI,Arial,sans-serif; background:#dce0e8; color:#333333; font-size:13px; }
+    .container { padding:10px 14px 8px; background:#eceff5; min-height:100%; }
+    .topo { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+    .topo-titulo { font-weight:700; font-size:16px; color:#4a5ab8; letter-spacing:1px; }
+    .topo-turma { font-size:13px; color:#666666; }
+    .cartao { background:#ffffff; border:1px solid #d0d5e0; border-radius:10px; padding:10px 14px; margin-bottom:10px; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
+    .cartao-linha { display:flex; align-items:center; justify-content:space-between; }
+    .rotulo { font-size:11px; color:#888888; text-transform:uppercase; letter-spacing:0.5px; }
+    .valor { font-weight:600; color:#222222; }
+    .valor-nome { font-size:18px; font-weight:700; line-height:24px; color:#111111; }
+    .valor-cpf { font-size:16px; color:#555555; font-family:Consolas,monospace; letter-spacing:1px; }
+    .progresso-area { margin-top:10px; }
+    .progresso-info { display:flex; justify-content:space-between; font-size:11px; color:#888888; margin-bottom:4px; }
+    .barra-fundo { width:100%; height:14px; background:#e0e4ec; border-radius:7px; overflow:hidden; }
+    .barra-preenchimento { height:100%; width:0%; background:linear-gradient(90deg,#4b7bec,#6c5ce7); border-radius:7px; transition:width 0.3s; }
+    .botoes { display:flex; gap:6px; margin-top:10px; }
+    .botoes input { flex:1; min-width:80px; height:32px; border:2px solid #b0b8cc; border-radius:16px; background:#ffffff; color:#444444; font-size:12px; font-weight:600; cursor:pointer; outline:none; padding:0 8px; }
+    .botoes input:hover { background:#f0f4ff; border-color:#4b7bec; color:#4b7bec; }
+    .botoes input:active { background:#e0e8f8; }
+    .botoes .sair { border-color:#cc99a8; color:#c0392b; }
+    .botoes .sair:hover { background:#fff0f0; border-color:#c0392b; color:#c0392b; }
+    .rodape { text-align:center; font-size:9px; color:#aaaaaa; margin-top:4px; }
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="topo">
+            <span class="topo-titulo" id="lblCabecalho">EDUCACENSO</span>
+            <span class="topo-turma" id="lblTurma"></span>
+        </div>
+        <div class="cartao">
+            <div class="cartao-linha">
+                <span class="rotulo">Registro</span>
+                <span class="valor" id="lblAluno">0 de 0</span>
+            </div>
+            <div style="margin-top:6px;">
+                <span class="rotulo">Aluno</span>
+            </div>
+            <div class="valor-nome" id="lblNome"></div>
+            <div style="margin-top:6px;">
+                <span class="rotulo">CPF</span>
+            </div>
+            <div class="valor-cpf" id="lblCpf"></div>
+            <div style="margin-top:8px;display:flex;gap:20px;">
+                <div>
+                    <span class="rotulo">Raça / Cor</span>
+                    <div style="font-size:14px;font-weight:600;color:#444444;margin-top:2px;" id="lblRaca"></div>
+                </div>
+                <div>
+                    <span class="rotulo">Data Nasc.</span>
+                    <div style="font-size:14px;font-weight:600;color:#444444;margin-top:2px;" id="lblDtNasc"></div>
+                </div>
+            </div>
+            <div style="margin-top:6px;">
+                <span class="rotulo">Endere&ccedil;o</span>
+                <div style="font-size:13px;font-weight:500;color:#555555;margin-top:2px;" id="lblEndereco"></div>
+            </div>
+            <div style="margin-top:4px;">
+                <span class="rotulo">Transporte</span>
+                <div style="font-size:13px;font-weight:700;margin-top:2px;" id="lblTransporte"></div>
+            </div>
+            <div style="margin-top:4px;" id="divDeficiencias">
+                <span class="rotulo text-danger">Defici&ecirc;ncias</span>
+                <div style="font-size:13px;font-weight:600;color:#c0392b;margin-top:2px;" id="lblDeficiencias"></div>
+            </div>
+            <div style="margin-top:4px;display:flex;gap:20px;">
+                <div id="divRecurso">
+                    <span class="rotulo">Recurso</span>
+                    <div style="font-size:14px;font-weight:600;color:#444444;margin-top:2px;" id="lblRecurso"></div>
+                </div>
+                <div id="divApoio">
+                    <span class="rotulo">Apoio</span>
+                    <div style="font-size:14px;font-weight:600;color:#444444;margin-top:2px;" id="lblApoio"></div>
+                </div>
+            </div>
+            <div class="progresso-area">
+                <div class="progresso-info">
+                    <span id="lblProgresso">Aguardando...</span>
+                    <span id="lblPercentual">0%</span>
+                </div>
+                <div class="barra-fundo">
+                    <div class="barra-preenchimento" id="barra"></div>
+                </div>
+                </div>
+            </div>
+        <div class="botoes">
+            <input type="button" id="btnVoltar" value="< Retroceder" onclick="btnVoltar_OnClick">
+            <input type="button" id="btnAvancar" value="Avançar >" onclick="btnAvancar_OnClick">
+            <input type="button" id="btnRepetir" value="Repetir CPF" onclick="btnRepetir_OnClick">
+            <input type="button" id="btnPausar" value="Pausar" onclick="btnPausar_OnClick">
+            <input type="button" id="btnCalibrar" value="Calibrar" onclick="btnCalibrar_OnClick">
+            <input type="button" id="btnSair" value="Sair" onclick="btnSair_OnClick" class="sair">
+        </div>
+        <div style="text-align:center;font-size:10px;color:#999999;margin:4px 0 0;">1&ordm; CPF: popup + OK. Demais: navegue at&eacute; o aluno no navegador e clique Avan&ccedil;ar</div>
+        <div class="rodape">
+            <span style="color:#999;">&larr; Voltar</span>
+            <span style="color:#ccc;margin:0 4px;">|</span>
+            <span style="color:#999;">&rarr; ou Enter = Avan&ccedil;ar</span>
+            <span style="color:#ccc;margin:0 4px;">|</span>
+            <span style="color:#999;">R = Repetir</span>
+            <span style="color:#ccc;margin:0 4px;">|</span>
+            <span style="color:#999;">P = Pausar</span>
+            <span style="color:#ccc;margin:0 4px;">|</span>
+            <span style="color:#999;">C = Calibrar</span>
+            <span style="color:#ccc;margin:0 4px;">|</span>
+            <span style="color:#999;">Esc = Sair</span>
+        </div>
+    </div>
+</body>
+</html>
+
+
+

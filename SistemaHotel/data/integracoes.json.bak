@@ -1,0 +1,122 @@
+﻿{
+    "reservas_externas":  [
+
+                          ],
+    "canais_conectados":  [
+
+                          ],
+    "mapeamento_quartos":  [
+
+                           ],
+    "historico_sincronia":  [
+                                {
+                                    "tipo":  "sincronizacao",
+                                    "canal":  "expedia",
+                                    "data":  "2026-07-07 09:57",
+                                    "status":  "sucesso",
+                                    "reservas_processadas":  0
+                                },
+                                {
+                                    "tipo":  "sincronizacao",
+                                    "canal":  "booking",
+                                    "data":  "2026-07-07 09:59",
+                                    "status":  "sucesso",
+                                    "reservas_processadas":  0
+                                },
+                                {
+                                    "tipo":  "sincronizacao",
+                                    "canal":  "omnibees",
+                                    "data":  "2026-07-07 10:29",
+                                    "status":  "sucesso",
+                                    "reservas_processadas":  0
+                                },
+                                {
+                                    "tipo":  "sincronizacao",
+                                    "canal":  "airbnb",
+                                    "data":  "2026-07-07 10:29",
+                                    "status":  "sucesso",
+                                    "reservas_processadas":  0
+                                },
+                                {
+                                    "tipo":  "sincronizacao",
+                                    "canal":  "booking",
+                                    "data":  "2026-07-07 10:29",
+                                    "status":  "sucesso",
+                                    "reservas_processadas":  0
+                                },
+                                {
+                                    "tipo":  "sincronizacao",
+                                    "canal":  "expedia",
+                                    "data":  "2026-07-07 10:29",
+                                    "status":  "sucesso",
+                                    "reservas_processadas":  0
+                                },
+                                {
+                                    "tipo":  "sincronizacao",
+                                    "canal":  "booking",
+                                    "data":  "2026-07-07 11:33",
+                                    "status":  "sucesso",
+                                    "reservas_processadas":  0
+                                },
+                                {
+                                    "tipo":  "sincronizacao",
+                                    "canal":  "booking",
+                                    "data":  "2026-07-07 11:43",
+                                    "status":  "sucesso",
+                                    "reservas_processadas":  0
+                                },
+                                {
+                                    "tipo":  "sincronizacao",
+                                    "canal":  "omnibees",
+                                    "data":  "2026-07-07 11:43",
+                                    "status":  "sucesso",
+                                    "reservas_processadas":  0
+                                },
+                                {
+                                    "tipo":  "sincronizacao",
+                                    "canal":  "expedia",
+                                    "data":  "2026-07-07 11:43",
+                                    "status":  "sucesso",
+                                    "reservas_processadas":  0
+                                },
+                                {
+                                    "tipo":  "sincronizacao",
+                                    "canal":  "omnibees",
+                                    "data":  "2026-07-09 07:46",
+                                    "status":  "sucesso",
+                                    "reservas_processadas":  0
+                                },
+                                {
+                                    "data":  "2026-07-09 08:28:52",
+                                    "canal":  "",
+                                    "tipo":  "importacao_simulada",
+                                    "reservas_importadas":  0,
+                                    "status":  "sucesso",
+                                    "mensagem":  "Importacao simulada concluida: 0 reservas em 0 canais"
+                                },
+                                {
+                                    "data":  "2026-07-09 08:48:25",
+                                    "canal":  "",
+                                    "tipo":  "importacao_simulada",
+                                    "reservas_importadas":  0,
+                                    "status":  "sucesso",
+                                    "mensagem":  "Importacao simulada concluida: 0 reservas em 0 canais"
+                                },
+                                {
+                                    "data":  "2026-07-09 08:52:15",
+                                    "canal":  "",
+                                    "tipo":  "importacao_simulada",
+                                    "reservas_importadas":  0,
+                                    "status":  "sucesso",
+                                    "mensagem":  "Importacao simulada concluida: 0 reservas em 0 canais"
+                                },
+                                {
+                                    "data":  "2026-07-09 08:56:45",
+                                    "canal":  "",
+                                    "tipo":  "importacao_simulada",
+                                    "reservas_importadas":  0,
+                                    "status":  "sucesso",
+                                    "mensagem":  "Importacao simulada concluida: 0 reservas em 0 canais"
+                                }
+                            ]
+}

@@ -1,0 +1,18 @@
+# OS / editores
+Thumbs.db
+Desktop.ini
+.DS_Store
+*.swp
+*~
+
+# Logs e temporários
+*.log
+*.tmp
+
+# Build
+dist/
+node_modules/
+
+# Ferramentas locais de teste (não entram na produção)
+serve.out
+serve.log

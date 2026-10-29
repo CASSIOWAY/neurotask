@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reservas>
+  <reserva>
+    <id_reserva>OMN-XML-001</id_reserva>
+    <nome_hospede>Camila Fernandes</nome_hospede>
+    <email>camila.fernandes@email.com</email>
+    <telefone>(11)98888-7777</telefone>
+    <data_checkin>2026-08-20</data_checkin>
+    <data_checkout>2026-08-23</data_checkout>
+    <adultos>2</adultos>
+    <criancas>0</criancas>
+    <tipo_quarto>casal</tipo_quarto>
+    <valor_total>210.00</valor_total>
+    <moeda>BRL</moeda>
+    <status>confirmada</status>
+    <data_reserva>2026-07-15</data_reserva>
+  </reserva>
+  <reserva>
+    <id_reserva>OMN-XML-002</id_reserva>
+    <nome_hospede>Bruno Oliveira</nome_hospede>
+    <email>bruno.oliveira@email.com</email>
+    <telefone>(21)97777-6666</telefone>
+    <data_checkin>2026-08-25</data_checkin>
+    <data_checkout>2026-08-28</data_checkout>
+    <adultos>4</adultos>
+    <criancas>2</criancas>
+    <tipo_quarto>familia</tipo_quarto>
+    <valor_total>360.00</valor_total>
+    <moeda>BRL</moeda>
+    <status>pendente</status>
+    <data_reserva>2026-07-20</data_reserva>
+  </reserva>
+</reservas>

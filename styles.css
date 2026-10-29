@@ -425,6 +425,21 @@ h1,h2,h3,.brand-name,.pc-val,.timer-num{font-family:"Space Grotesk","Inter",sans
 .proof b{display:block;font-family:"Space Grotesk",sans-serif;font-size:1.5rem;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .proof span{color:var(--muted);font-size:.78rem}
 
+/* Urgência no hero */
+.hero-urgency{
+  display:inline-block;
+  margin:10px 0 18px;
+  padding:8px 16px;
+  background:rgba(255,77,141,.12);
+  border:1px solid rgba(255,77,141,.4);
+  border-radius:999px;
+  color:#ffd9e6;
+  font-size:.82rem;
+  font-weight:600;
+  animation:scarcityPulse 2.4s ease-in-out infinite;
+}
+.hero-urgency span{color:var(--gold);font-size:.9rem}
+
 /* ---- Visão / aspiração ---- */
 .vision-grid{
   display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:8px 0 24px;

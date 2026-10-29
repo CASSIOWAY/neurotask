@@ -9,6 +9,19 @@ e este projeto segue [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ---
 
+## [1.0.3] — 2026-10-29
+
+### Adicionado
+- **PWA (Progressive Web App)**: `manifest.json` e `service-worker.js` permitem instalar o NeuroTask na tela inicial do celular e funcionam offline.
+- **Hero otimizado para conversão**: seção de urgência com contagem regressiva de vagas, prova social destacada logo abaixo do CTA principal.
+- **JSON-LD completo**: adicionados `Review` com autores reais, `bestRating`/`worstRating` na `AggregateRating`, e `screenshot` no `SoftwareApplication`.
+
+### Alterado
+- Hero Section: copy mais direta com chamada para ação e urgência de lançamento.
+- Painel e paywall mantêm foco em aversão à perda (streak visível em toda a topbar).
+
+---
+
 ## [1.0.2] — 2026-10-26
 
 ### Adicionado

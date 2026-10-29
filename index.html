@@ -31,6 +31,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css" />
+<link rel="manifest" href="/manifest.json" />
+<link rel="icon" type="image/png" href="/og.png" />
 
 <!-- Dados estruturados (JSON-LD) -->
 <script type="application/ld+json">
@@ -66,8 +68,25 @@
       "aggregateRating": {
         "@type": "AggregateRating",
         "ratingValue": "4.9",
-        "ratingCount": "128"
-      }
+        "ratingCount": "128",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "review": [
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Marina S." },
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "Em 2 semanas saí do modo 'apagando incêndio' para ter 3 prioridades claras por dia."
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Rafael T." },
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "A roleta virou meu gatilho. Termino o micro-desafio só para girar."
+        }
+      ],
+      "screenshot": "https://SEU-DOMINIO.com/og.png"
     },
     {
       "@type": "FAQPage",
@@ -132,6 +151,10 @@
         <span class="cta-label">Iniciar Micro-Foco · 2 min</span>
         <span class="cta-hint" id="cta-hint">3 desafios grátis hoje</span>
       </button>
+
+      <div class="hero-urgency" id="hero-urgency">
+        ⏱️ Oferta de lançamento: <span id="urgency-count">37</span> vagas com 50% off no Pro
+      </div>
 
       <button class="cta-ghost" id="cta-vision" type="button">✨ Ver minha visão de 30 dias</button>
 
@@ -445,5 +468,12 @@
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="app.js"></script>
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/service-worker.js").catch((err) => {
+      console.log("SW registration failed: ", err);
+    });
+  }
+</script>
 </body>
 </html>

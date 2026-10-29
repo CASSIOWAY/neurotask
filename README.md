@@ -11,6 +11,7 @@
 
 MVP autocontido em **HTML + CSS + JS puro**. Sem build, sem dependências, sem backend.
 Persistência via `localStorage` (funciona offline, sem cadastro).
+PWA (Progressive Web App) — instalável no celular via `manifest.json` e `service-worker.js`.
 
 ---
 
@@ -37,7 +38,8 @@ Depois abra `http://localhost:8732/`.
 | `robots.txt` | Diz aos buscadores o que indexar + local do sitemap |
 | `sitemap.xml` | Mapa do site para o Google/Bing |
 | `og.png` | Cartão de compartilhamento (1200×630) para redes sociais |
-| `make-og.ps1` | Gera o `og.png` (rode se quiser recriar o cartão) |
+| `manifest.json` | Manifesto PWA — permite instalar no celular |
+| `service-worker.js` | Service worker — cache e funcionamento offline |
 | `PUBLICAR-E-CRESCER.md` | **Guia completo**: hospedagem grátis, SEO, backlinks, parcerias |
 | `CONTRIBUTING.md` | Como contribuir: fluxo, padrões de código e checklist de PR |
 

@@ -1,0 +1,50 @@
+name: "🤝 Proposta de parceria"
+description: "Marcas patrocinando recompensas, afiliados, co-marketing, licenciamento"
+title: "[PARCERIA] "
+labels: ["parceria"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Quer colocar sua marca nas recompensas, ser afiliado ou fechar co-marketing?
+        Conte um pouco sobre a proposta.
+
+  - type: textarea
+    id: marca
+    attributes:
+      label: "Sua marca / produto"
+      description: "Nome, segmento e site"
+      placeholder: "Ex.: Loja X de produtividade — lojax.com.br"
+    validations:
+      required: true
+
+  - type: textarea
+    id: modelo
+    attributes:
+      label: "Modelo de parceria"
+      description: "Como você imagina a colaboração"
+      placeholder: "Ex.: cupom na Roleta de Bônus por CPL / comissão de afiliado / cross-promo"
+    validations:
+      required: true
+
+  - type: textarea
+    id: valor
+    attributes:
+      label: "Valor proposto"
+      description: "Orçamento, comissão ou contrapartida"
+      placeholder: "Ex.: R$ 0,50 por lead qualificado ou 30% de comissão"
+
+  - type: textarea
+    id: contato
+    attributes:
+      label: "Contato"
+      description: "E-mail ou LinkedIn para continuarmos"
+      placeholder: "voce@empresa.com"
+
+  - type: checkboxes
+    id: confidencial
+    attributes:
+      label: "Visibilidade"
+      options:
+        - label: "Pode deixar esta proposta visível publicamente"
+        - label: "Prefiro que seja tratada em privado"

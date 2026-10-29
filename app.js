@@ -364,7 +364,10 @@
     { label: "+15 ⚡", color: "#7c5cff", kind: "points", value: 15, emoji: "⚡" },
     { label: "Templates", color: "#00e0c6", kind: "premium", emoji: "📦" },
     { label: "+25 ⚡", color: "#ffc94d", kind: "points", value: 25, emoji: "⚡" },
-    { label: "IA 5cr", color: "#ff4d8d", kind: "premium", value: 5, emoji: "🤖" }
+    { label: "IA 5cr", color: "#ff4d8d", kind: "premium", value: 5, emoji: "🤖" },
+    { label: "Proteção Streak", color: "#9c27b0", kind: "protect", emoji: "🛡️", needPro: false },  // NOVO - não perde streak
+    { label: "+50 ⚡ (PRO)", color: "#e91e63", kind: "points", value: 50, emoji: "💎", needPro: true },  // NOVO - apenas PRO
+    { label: "Roleta Premium", color: "#ffd700", kind: "coupon", emoji: "👑", needPro: true }  // NOVO - prêmio maior PRO
   ];
 
   var BADGES = [
@@ -372,7 +375,10 @@
     { id: "tres", icon: "🔥", name: "Trinca", need: 3 },
     { id: "dez", icon: "⚡", name: "Dopamina Alta", need: 10 },
     { id: "streak3", icon: "📅", name: "3 Dias Seguidos", need: "streak3" },
-    { id: "streak7", icon: "👑", name: "Imparável (7 dias)", need: "streak7" }
+    { id: "streak7", icon: "👑", name: "Imparável (7 dias)", need: "streak7" },
+    { id: "challenge50", icon: "🏅", name: "Maratonista", need: 50 },
+    { id: "wheel100", icon: "📜", name: "Colecionador de Premiações", need: 100 },
+    { id: "pro30days", icon: "👑", name: "VIP 30 Dias", need: "pro30days" }
   ];
 
   /* ---- Persuasão ---- */
@@ -565,6 +571,22 @@
     if (state.spinDayStamp !== t) {
       state.spinDayStamp = t;
       state.spinsUsedToday = 0;
+    }
+    // Verificar se streak está protegida
+    if (state.streakProtected) {
+      var protectedUntil = state.streakProtectedUntil;
+      // Se a proteção venceu há mais de 1 dia, zera a flag
+      if (protectedUntil < yesterdayStr()) {
+        state.streakProtected = false;
+      } else {
+        // Proteção ainda válida - não reseta o streak
+        if (state.lastActiveDay !== t) {
+          // Mantém o streak atual, não incrementa nem zera
+          state.lastActiveDay = t;
+          toast("🔒 Streak protegida! Seu progresso está seguro.");
+          return;
+        }
+      }
     }
     if (state.lastActiveDay !== t) {
       if (state.lastActiveDay === yesterdayStr()) state.streak += 1;
@@ -851,6 +873,7 @@
       var ok = false;
       if (b.need === "streak3") ok = state.streak >= 3;
       else if (b.need === "streak7") ok = state.streak >= 7;
+      else if (b.need === "pro30days") ok = state.pro && state.totalCompleted >= 30;
       else ok = state.totalCompleted >= b.need;
       if (ok) {
         state.unlockedBadges.push(b.id);
@@ -925,10 +948,22 @@
   function landOnSlice(slice) {
     var title = "", desc = "", tag = "";
     if (slice.kind === "points") {
-      state.points += slice.value;
-      title = "+" + slice.value + " pontos!";
-      desc = "Energia extra somada ao seu saldo. Continue assim.";
+      if (slice.needPro && !state.pro) {
+        title = "🔒 Prêmio PRO!";
+        desc = "Este prêmio é exclusivo para assinantes Pro. Ative o Pro para ganhar!";
+      } else {
+        state.points += slice.value;
+        title = "+" + slice.value + " pontos!";
+        desc = "Energia extra somada ao seu saldo. Continue assim.";
+      }
       tag = "PONTOS";
+    } else if (slice.kind === "protect") {
+      // Proteção: não permite que o streak seja resetado nas próximas 24h
+      state.streakProtected = true;
+      state.streakProtectedUntil = todayStr();
+      title = "🛡️ Streak Protegida!";
+      desc = "Seu streak não será resetado mesmo se ficar um dia sem usar o app. Durando até amanhã.";
+      tag = "PROTEÇÃO";
     } else if (slice.kind === "coupon") {
       var r = pickReward();
       state.rewards.unshift({ icon: "🏷️", name: "Cupom bônus: " + r.name, meta: r.meta, tier: "free" });

@@ -796,7 +796,12 @@
   }
 
   function completeChallenge() {
-    if (!active) return;
+    if (!active) {
+      // Se não houver desafio ativo, voltar para a tela hero
+      show("screen-hero");
+      toast("Nenhum desafio em andamento.");
+      return;
+    }
     stopTimer();
 
     var c = active.challenge;
@@ -810,7 +815,9 @@
     state.points += gained;
     state.challengesToday += 1;
     state.totalCompleted += 1;
-    state.pendingSpins += 1;
+    // Garantir que pendingSpins seja sempre incrementado
+    state.pendingSpins = (state.pendingSpins || 0) + 1;
+    save();
 
     // Marca o desafio como concluído na jornada
     var justCompleted = completeChallengeId(c.id);
@@ -921,6 +928,11 @@
     state.pendingSpins -= 1;
     state.spinsUsedToday += 1;
     save();
+
+    // Se não houver mais giros disponíveis, esconder a roleta
+    if (state.pendingSpins <= 0) {
+      $$(".wheel-wrap").forEach(function (w) { w.classList.add("hidden"); });
+    }
 
     var n = WHEEL_SLICES.length;
     var slice = 360 / n;

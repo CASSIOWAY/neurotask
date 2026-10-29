@@ -422,6 +422,7 @@
       dayStamp: todayStr(),
       totalCompleted: 0,
       pro: false,
+      proLifetime: false,
       pendingSpins: 0,
       spinsUsedToday: 0,
       spinDayStamp: todayStr(),
@@ -971,6 +972,14 @@
     soundWin();
     vibrate([50, 40, 90]);
     confetti(90);
+
+    // Paywall após roleta se não for Pro
+    if (!state.pro) {
+      setTimeout(function () {
+        show("screen-upgrade");
+        toast("💡 Quer continuar girando a roleta? Ative o Pro!");
+      }, 1500);
+    }
   }
 
   /* ---------------- Painel ---------------- */
@@ -1376,6 +1385,11 @@
     document.getElementById("points-pop").textContent = "+" + gained + " ⚡";
     document.getElementById("chest-label").textContent = "Girar Roleta de Bônus";
 
+    // Paywall no momento de maior dopamina: após desafio se streak >= 3 e não pro
+    if (!state.pro && state.streak >= 3) {
+      state.showPaywallStreak = true;
+    }
+
     show("screen-reward");
     soundWin();
     vibrate([40, 40, 80]);
@@ -1488,6 +1502,11 @@
       goUpgrade();
     });
 
+    $("#btn-buy-ltd").addEventListener("click", function () {
+      soundClick();
+      goUpgrade();
+    });
+
     $("#btn-ativar-pro").addEventListener("click", function (e) {
       e.preventDefault();
       soundClick();
@@ -1497,7 +1516,16 @@
         toast("Preencha e-mail e código");
         return;
       }
-      // Simples validação: se digitou, libera (você pode validar contra JSON real se quiser)
+      var encontrado = PAID_CODES.find(function (c) {
+        return c.code.toUpperCase() === codigo.toUpperCase() &&
+               c.email.toLowerCase() === email.toLowerCase() &&
+               c.used !== true;
+      });
+      if (!encontrado) {
+        toast("Código ou e-mail inválido. Verifique e tente novamente.");
+        return;
+      }
+      encontrado.used = true;
       state.pro = true;
       state.userEmail = email;
       save();
@@ -1507,6 +1535,99 @@
       soundWin();
       confetti(160);
       toast("🎉 Bem-vindo ao Pro! Desafios ilimitados e cashback liberados.");
+    });
+
+    $("#btn-ativar-pro-vitalicio").addEventListener("click", function (e) {
+      e.preventDefault();
+      soundClick();
+      var email = document.getElementById("pix-email-ltd").value.trim();
+      var codigo = document.getElementById("pix-code-ltd").value.trim();
+      if (!email || !codigo) {
+        toast("Preencha e-mail e código");
+        return;
+      }
+      var encontrado = PAID_CODES.find(function (c) {
+        return c.code.toUpperCase() === codigo.toUpperCase() &&
+               c.email.toLowerCase() === email.toLowerCase() &&
+               c.used !== true;
+      });
+      if (!encontrado) {
+        toast("Código ou e-mail inválido. Verifique e tente novamente.");
+        return;
+      }
+      encontrado.used = true;
+      state.pro = true;
+      state.proLifetime = true;
+      state.userEmail = email;
+      save();
+      renderTopbar();
+      renderPanel();
+      show("screen-panel");
+      soundWin();
+      confetti(200);
+      toast("🎉 Bem-vindo ao NeuroTask Vitalício! Acesso permanente liberado.");
+    });
+
+    $("#btn-ativar-ltd").addEventListener("click", function (e) {
+      e.preventDefault();
+      soundClick();
+      var email = document.getElementById("pix-email-ltd").value.trim();
+      var codigo = document.getElementById("pix-code-ltd").value.trim();
+      if (!email || !codigo) {
+        toast("Preencha e-mail e código");
+        return;
+      }
+      var encontrado = PAID_CODES.find(function (c) {
+        return c.code.toUpperCase() === codigo.toUpperCase() &&
+               c.email.toLowerCase() === email.toLowerCase() &&
+               c.used !== true;
+      });
+      if (!encontrado) {
+        toast("Código ou e-mail inválido. Verifique e tente novamente.");
+        return;
+      }
+      encontrado.used = true;
+      state.pro = true;
+      state.proLifetime = true;
+      state.userEmail = email;
+      save();
+      renderTopbar();
+      renderPanel();
+      show("screen-panel");
+      soundWin();
+      confetti(200);
+      toast("🎉 Bem-vindo ao NeuroTask Vitalício! Acesso permanente liberado.");
+    });
+
+    $("#btn-ativar-ltd").addEventListener("click", function (e) {
+      e.preventDefault();
+      soundClick();
+      var email = document.getElementById("pix-email").value.trim();
+      var codigo = document.getElementById("pix-code").value.trim();
+      if (!email || !codigo) {
+        toast("Preencha e-mail e código");
+        return;
+      }
+      var encontrado = PAID_CODES.find(function (c) {
+        return c.code.toUpperCase() === codigo.toUpperCase() &&
+               c.email.toLowerCase() === email.toLowerCase() &&
+               c.used !== true;
+      });
+      if (!encontrado) {
+        toast("Código ou e-mail inválido. Verifique e tente novamente.");
+        return;
+      }
+      encontrado.used = true;
+      state.pro = true;
+      state.proLifetime = true;
+      state.userEmail = email;
+      save();
+      renderTopbar();
+      renderPanel();
+      show("screen-panel");
+      soundWin();
+      confetti(200);
+      toast("🎉 Bem-vindo ao NeuroTask Vitalício! Acesso permanente liberado.");
     });
 
     // recalcula as etiquetas da roleta se a janela mudar de tamanho

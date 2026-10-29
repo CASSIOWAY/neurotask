@@ -361,7 +361,7 @@
         </div>
         <div class="plan pro">
           <span class="plan-flag">MAIS ESCOLHIDO</span>
-          <h3>Pro</h3>
+          <h3>Pro Mensal</h3>
           <p class="plan-price">R$ 19,90<span>/mês</span></p>
           <ul>
             <li>✓ Desafios ilimitados</li>
@@ -370,6 +370,19 @@
             <li>✓ Templates e ferramentas de automação</li>
             <li>✓ Roleta Premium (prêmios maiores)</li>
             <li>✓ Comunidade VIP</li>
+          </ul>
+        </div>
+        <div class="plan ltd">
+          <span class="plan-flag">OFERTA LANÇAMENTO</span>
+          <h3>Vitalício</h3>
+          <p class="plan-price">R$ 47<span>/único</span></p>
+          <ul>
+            <li>✓ Desafios ilimitados para sempre</li>
+            <li>✓ Cashback real com parceiros</li>
+            <li>✓ Relatórios de evolução por IA</li>
+            <li>✓ Templates e ferramentas de automação</li>
+            <li>✓ Roleta Premium (prêmios maiores)</li>
+            <li>✓ Comunidade VIP vitalícia</li>
           </ul>
         </div>
       </div>
@@ -400,6 +413,16 @@
             <span class="cta-label">Ativar Meu Acesso</span>
           </button>
         </div>
+        <div class="pix-claim-vitalicio" style="display:none; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line);">
+          <label for="pix-email-ltd">Seu e-mail:</label>
+          <input type="email" id="pix-email-ltd" placeholder="seu@email.com" />
+          <label for="pix-code-ltd">Código de Ativação Vitalício:</label>
+          <input type="text" id="pix-code-ltd" placeholder="NEURO-XXXX-XXXX" maxlength="20" />
+          <button class="cta-primary" id="btn-ativar-pro-vitalicio" type="button">
+            <span class="cta-ring" aria-hidden="true"></span>
+            <span class="cta-label">Ativar Acesso Vitalício</span>
+          </button>
+        </div>
         <p class="pix-note">Após o pagamento, preencha seu telefone e clique em "Solicitar Código de Acesso". Enviaremos o código pelo WhatsApp.</p>
       </div>
 
@@ -420,6 +443,11 @@
           <span class="cta-ring" aria-hidden="true"></span>
           <span class="cta-label">Quero o Pro · R$ 19,90/mês</span>
           <span class="cta-hint">Cancele quando quiser</span>
+        </button>
+        <button class="cta-primary" id="btn-buy-ltd" type="button">
+          <span class="cta-ring" aria-hidden="true"></span>
+          <span class="cta-label">Vitalício · R$ 47 uma vez</span>
+          <span class="cta-hint">Pague uma vez só</span>
         </button>
         <button class="cta-ghost" id="btn-skip-upgrade" type="button">Agora não</button>
       </div>

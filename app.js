@@ -1538,14 +1538,8 @@
 
     $("#btn-buy-pro").addEventListener("click", function () {
       if (state.pro) return;
-      state.pro = true;
-      save();
-      renderTopbar();
-      toast("🎉 Bem-vindo ao Pro! Desafios ilimitados e cashback liberados.");
-      soundWin();
-      confetti(160);
-      renderPanel();
-      show("screen-panel");
+      soundClick();
+      goUpgrade();
     });
 
     $("#btn-skip-upgrade").addEventListener("click", function () {

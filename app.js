@@ -1744,7 +1744,7 @@
 
     /* ---------------- Pix pagamento ---------------- */
     var PIX_KEY = "f62808ea-c9d5-4941-b752-20fe41e41e81";
-    var WHATSAPP = "5563991291661";
+    // Código de ativação será enviado por e-mail após pagamento
 
     // Códigos de ativação válidos (adicionar manualmente quando cliente paga)
     var PAID_CODES = [
@@ -1774,14 +1774,8 @@
     }
 
     function solicitCodigoPix() {
-      var phone = document.getElementById("pix-phone").value.trim();
       var email = document.getElementById("pix-email").value.trim();
 
-      if (!telefone) {
-        toast("Digite seu telefone primeiro");
-        document.getElementById("pix-phone").focus();
-        return;
-      }
       if (!email) {
         toast("Digite seu e-mail primeiro");
         document.getElementById("pix-email").focus();
@@ -1790,16 +1784,14 @@
 
       // Gerar código de ativação
       var code = "NEURO-" + Date.now().toString(36).toUpperCase() + "-" + Math.random().toString(36).toUpperCase().substr(0, 4);
-      PAID_CODES.push({ code: code, email: email, telefone: phone, used: false });
+      PAID_CODES.push({ code: code, email: email, used: false });
 
       var msg = encodeURIComponent(
-        "Olá! Paguei o NeuroTask Pro via Pix.\nMeu telefone: " + phone + "\nMeu e-mail: " + email + "\nMeu código de ativação é: " + code + "\nPor favor, confirme e libere meu acesso Pro."
+        "Olá! Paguei o NeuroTask Pro via Pix.\nMeu e-mail: " + email + "\nMeu código de ativação é: " + code + "\nPor favor, confirme e libere meu acesso Pro."
       );
-      window.open("https://wa.me/" + WHATSAPP + "?text=" + msg, "_blank");
+      toast("🎉 Código de ativação gerado! Verifique seu e-mail.");
 
-      // Mostrar campo para digitar código recebido
-      document.getElementById("pix-code-input").style.display = "block";
-      toast("Mensagem enviada pelo WhatsApp. Aguarde o código de ativação.");
+      toast("🎉 Código de ativação gerado! Verifique seu e-mail.");
     }
 
     function ativarProPorCodigo() {

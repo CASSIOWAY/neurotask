@@ -389,7 +389,7 @@
 
       <div class="pix-section">
         <h3>Pague via Pix</h3>
-        <p class="pix-sub">Após o pagamento, informe seu telefone para receber o código de ativação.</p>
+        <p class="pix-sub">Após o pagamento, informe seu e-mail para receber o código de ativação.</p>
         <div class="pix-qr">
           <img id="pix-qr-img" src="" alt="QR Code Pix" />
           <div class="pix-key">
@@ -397,15 +397,7 @@
             <button id="copy-pix" class="ghost-btn small">Copiar</button>
           </div>
         </div>
-        <div class="pix-claim">
-          <label for="pix-phone">Seu telefone (WhatsApp):</label>
-          <input type="tel" id="pix-phone" placeholder="(11) 99999-9999" />
-          <button class="cta-primary" id="btn-request-code" type="button">
-            <span class="cta-ring" aria-hidden="true"></span>
-            <span class="cta-label">Solicitar Código de Acesso</span>
-          </button>
-        </div>
-        <div class="pix-code-input" style="display:none; margin-top: 16px;">
+        <div class="pix-code-input">
           <label for="pix-code">Código de Ativação:</label>
           <input type="text" id="pix-code" placeholder="NEURO-XXXX-XXXX" maxlength="20" />
           <button class="cta-primary" id="btn-activate-code" type="button">
@@ -413,17 +405,7 @@
             <span class="cta-label">Ativar Meu Acesso</span>
           </button>
         </div>
-        <div class="pix-claim-vitalicio" style="display:none; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line);">
-          <label for="pix-email-ltd">Seu e-mail:</label>
-          <input type="email" id="pix-email-ltd" placeholder="seu@email.com" />
-          <label for="pix-code-ltd">Código de Ativação Vitalício:</label>
-          <input type="text" id="pix-code-ltd" placeholder="NEURO-XXXX-XXXX" maxlength="20" />
-          <button class="cta-primary" id="btn-ativar-pro-vitalicio" type="button">
-            <span class="cta-ring" aria-hidden="true"></span>
-            <span class="cta-label">Ativar Acesso Vitalício</span>
-          </button>
-        </div>
-        <p class="pix-note">Após o pagamento, preencha seu telefone e clique em "Solicitar Código de Acesso". Enviaremos o código pelo WhatsApp.</p>
+        <p class="pix-note">Após o pagamento, preencha seu e-mail e clique em "Ativar Meu Acesso". Enviaremos o código de ativação para o e-mail informado.</p>
       </div>
 
       <div class="value-stack" id="value-stack"><!-- preenchido via JS --></div>

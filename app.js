@@ -929,10 +929,11 @@
     state.spinsUsedToday += 1;
     save();
 
-    // Se não houver mais giros disponíveis, esconder a roleta
-    if (state.pendingSpins <= 0) {
-      $$(".wheel-wrap").forEach(function (w) { w.classList.add("hidden"); });
-    }
+    // Feedback visual: desabilita botão durante o giro
+    var btn = $("#btn-spin");
+    btn.disabled = true;
+    btn.classList.add("spinning");
+    btn.textContent = "GIRANDO…";
 
     var n = WHEEL_SLICES.length;
     var slice = 360 / n;
@@ -953,6 +954,9 @@
     setTimeout(function () {
       clearInterval(tick);
       spinning = false;
+      btn.disabled = false;
+      btn.classList.remove("spinning");
+      btn.textContent = "GIRAR";
       landOnSlice(WHEEL_SLICES[idx]);
     }, 4300);
   }
@@ -1002,31 +1006,34 @@
     $("#prize-emoji").textContent = slice.emoji || "🎁";
     $("#prize-tag").textContent = tag;
 
-    // esconde a roleta e mostra o baú
-    $$(".wheel-wrap").forEach(function (w) { w.classList.add("hidden"); });
-    var result = $("#chest-result");
-    result.classList.remove("hidden");
-    result.classList.remove("revealed");
-    // força reflow para reiniciar as animações
-    void result.offsetWidth;
-    result.classList.add("revealed");
+    // esconde a roleta com animação e mostra o baú
+    $$(".wheel-wrap").forEach(function (w) { w.classList.add("spin-out"); });
+    setTimeout(function () {
+      $$(".wheel-wrap").forEach(function (w) { w.classList.add("hidden"); w.classList.remove("spin-out"); });
+      var result = $("#chest-result");
+      result.classList.remove("hidden");
+      result.classList.remove("revealed");
+      // força reflow para reiniciar as animações
+      void result.offsetWidth;
+      result.classList.add("revealed");
 
-    var chest = $("#chest");
-    chest.classList.remove("open");
-    void chest.offsetWidth;
-    chest.classList.add("open");
+      var chest = $("#chest");
+      chest.classList.remove("open");
+      void chest.offsetWidth;
+      chest.classList.add("open");
 
-    soundWin();
-    vibrate([50, 40, 90]);
-    confetti(90);
+      soundWin();
+      vibrate([50, 40, 90]);
+      confetti(90);
 
-    // Paywall após roleta se não for Pro
-    if (!state.pro) {
-      setTimeout(function () {
-        show("screen-upgrade");
-        toast("💡 Quer continuar girando a roleta? Ative o Pro!");
-      }, 1500);
-    }
+      // Paywall após roleta se não for Pro
+      if (!state.pro) {
+        setTimeout(function () {
+          show("screen-upgrade");
+          toast("💡 Quer continuar girando a roleta? Ative o Pro!");
+        }, 1500);
+      }
+    }, 500);
   }
 
   /* ---------------- Backup e Restore ---------------- */

@@ -1,0 +1,50 @@
+name: "✨ Pedir funcionalidade"
+description: "Sugira uma melhoria ou novo recurso"
+title: "[FEAT] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Adoramos ideias! Descreva o problema que a funcionalidade resolve.
+
+  - type: textarea
+    id: problema
+    attributes:
+      label: "Qual problema isso resolve?"
+      description: "O contexto importa mais que a solução"
+      placeholder: "Hoje eu preciso ... e é difícil porque ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solucao
+    attributes:
+      label: "Solução desejada"
+      description: "Como você imagina que funcione"
+      placeholder: "Seria ótimo se ..."
+
+  - type: textarea
+    id: alternativas
+    attributes:
+      label: "Alternativas consideradas"
+      description: "Já pensou em outra abordagem?"
+
+  - type: dropdown
+    id: impacto
+    attributes:
+      label: "Impacto"
+      description: "Quem mais se beneficia?"
+      options:
+        - "Só eu"
+        - "Alguns usuários"
+        - "Todos os usuários"
+        - "Novos usuários / aquisição"
+
+  - type: checkboxes
+    id: disposicao
+    attributes:
+      label: "Disposição para contribuir"
+      options:
+        - label: "Posso abrir um Pull Request para isso"
+        - label: "Não posso agora, mas apoio a ideia"

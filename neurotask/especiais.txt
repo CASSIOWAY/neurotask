@@ -1,0 +1,24 @@
+﻿ARTHUR FELIPE MENDES COSTA|Cegueira, Surdez, Def. Intelectual|Auxilio Ledor|Sim|||ERRO
+BEATRIZ BRUNO URBANO|Visao Monocular, Def. Intelectual|Auxilio Ledor|Sim|Propria||PENDENTE
+BIANCA MELISSA OLIVEIRA NEVES|Cegueira||Sim|Propria, Outra||PENDENTE
+DAVI LUCAS RODRIGUES DA SILVA|Def. Intelectual||Sim|Propria, APAE||PENDENTE
+EDSON RODRIGUES GONCALVES|Def. Intelectual||Sim|Propria, APAE||PENDENTE
+ENZO GONCALVES SILVA|Def. Intelectual|||Propria|PI|PENDENTE
+FABRICIO JUNIOR ALVES DE BRITO|TEA (Autismo)|Auxilio Ledor|Sim|Propria||PENDENTE
+GUILHERME JESUS MATTEUCCI|TEA (Autismo)|Nenhum|Sim|Propria||PENDENTE
+ISABELLA WAUANNY SOUSA CARVALHO|Def. Intelectual||Sim|Propria, Outra||PENDENTE
+ISADORA WEYLLA SOUSA CARVALHO|Def. Intelectual||Sim|Propria, Outra||PENDENTE
+JOAO LUCAS DE SOUSA CARVALHO|Baixa Visao, Def. Intelectual|||Propria||PENDENTE
+JOAO VITOR MARTINS DOS SANTOS|Surdocegueira|Nenhum||Propria||PENDENTE
+LUCAS PEREIRA DOS SANTOS|Def. Intelectual|||Propria, Outra|PI|PENDENTE
+LUDIMYLLA CRISTINY DOS SANTOS SILVA|Surdez, Def. Fisica, Def. Intelectual|Tradutor Libras, Auxilio transcricao||Propria|PI|PENDENTE
+LUIS MIGUEL OLIMPIO DE SOUSA|TEA (Autismo)|Auxilio Ledor|Sim|Propria, Outra||PENDENTE
+MICHAEL PEREIRA GOMES|Discalculia|||Propria, APAE, Clinica Autista|PI|PENDENTE
+OLGA MARIA LETICIA FRAZAO FONTES|TEA (Autismo)|Nenhum||Propria||PENDENTE
+PAULO GABRIEL ALMEIDA DA SILVA|TEA (Autismo)||Sim|Propria||PENDENTE
+SAMUEL DA SILVA SANTOS|TEA (Autismo)|||Propria, Outra||PENDENTE
+SAMUEL ISAQUE MAGALHAES DA CRUZ NASCIMENTO|Def. Intelectual, D.I./Sindrome Down|Auxilio Ledor||Propria|PI|ERRO
+THAMYRE BARBOSA SANTOS|Def. Intelectual|||Propria, Outra|PI|PENDENTE
+THAYLA PINHEIRO ROCHA|Visao Monocular|||Propria, Outra||PENDENTE
+VIVIANY RAQUEL SANTOS LEAL|Def. Intelectual|Nenhum|||PI|PENDENTE
+YASMIN VITORIA ARAUJO DOS SANTOS|Def. Intelectual||Sim|Propria||PENDENTE

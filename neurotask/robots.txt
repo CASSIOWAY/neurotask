@@ -1,0 +1,5 @@
+# NeuroTask — SEO
+User-agent: *
+Allow: /
+
+Sitemap: https://SEU-DOMINIO.com/sitemap.xml

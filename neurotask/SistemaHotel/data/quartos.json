@@ -1,0 +1,11 @@
+﻿{
+  "quartos": [],
+  "tipos_quarto": [
+    {"id": "suite", "nome": "Suíte", "capacidade": 2, "preco_base": 0, "descricao": "Apartamento Suíte"},
+    {"id": "standard", "nome": "Standard", "capacidade": 3, "preco_base": 0, "descricao": "Apartamento Standard"},
+    {"id": "familiar", "nome": "Familiar", "capacidade": 5, "preco_base": 0, "descricao": "Apartamento Familiar"}
+  ],
+  "status_quarto": ["disponivel", "ocupado", "reservado", "manutencao", "limpeza"]
+}
+
+

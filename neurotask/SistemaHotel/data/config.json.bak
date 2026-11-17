@@ -1,0 +1,115 @@
+﻿{
+    "hotel":  {
+                  "nome":  "Pousada Familiar Encanto da Chapada",
+                  "endereco":  "R. Ricardo Martins, 694",
+                  "cidade":  "Carolina",
+                  "estado":  "MA",
+                  "cep":  "65980-000",
+                  "telefone":  "+55 (99) 98121-9754",
+                  "email":  "",
+                  "website":  "",
+                  "cnpj":  "",
+                  "checkin_padrao":  "14:00",
+                  "checkout_padrao":  "12:00",
+                  "taxa_servico_percentual":  0,
+                  "moeda":  "BRL",
+                  "avaliacao":  0,
+                  "avaliacoes":  0,
+                  "descricao":  ""
+              },
+    "whatsapp":  {
+                     "ativo":  true,
+                     "numero":  "+55 (99) 98121-9754",
+                     "api_url":  "https://api.whatsapp.com/send",
+                     "mensagem_personalizada":  false,
+                     "confirmacao_automatica":  false
+                 },
+    "canais_integrados":  [
+
+                          ],
+    "comodidades":  [
+
+                    ],
+    "notificacoes":  {
+                         "email_confirmacao":  false,
+                         "whatsapp_confirmacao":  false,
+                         "lembrete_checkin":  false,
+                         "lembrete_checkout":  false,
+                         "antecedencia_lembrete_dias":  1
+                     },
+    "integracoes":  {
+                        "ultima_sincronizacao_global":  "2026-07-09 08:56:45",
+                        "exportar_inventario_automatico":  false,
+                        "intervalo_sincronizacao_minutos":  60,
+                        "omnibees":  {
+                                         "ativo":  false,
+                                         "api_url":  "https://api.omnibees.com",
+                                         "api_key":  "",
+                                         "usuario":  "",
+                                         "senha":  "",
+                                         "comissao_percentual":  15,
+                                         "auto_importar":  false,
+                                         "sincronizar_inventario":  false,
+                                         "sincronizar_tarifas":  false,
+                                         "formato_arquivo":  "xml",
+                                         "mapeamento_tipos":  {
+
+                                                              },
+                                         "ultima_sincronizacao":  "",
+                                         "painel_url":  "https://hub.omnibees.com"
+                                     },
+                        "booking":  {
+                                        "ativo":  false,
+                                        "api_url":  "https://distribution-xml.booking.com",
+                                        "usuario":  "",
+                                        "senha":  "",
+                                        "comissao_percentual":  15,
+                                        "auto_importar":  false,
+                                        "sincronizar_inventario":  false,
+                                        "sincronizar_tarifas":  false,
+                                        "formato_arquivo":  "csv",
+                                        "mapeamento_tipos":  {
+
+                                                             },
+                                        "ultima_sincronizacao":  "",
+                                        "painel_url":  "https://admin.booking.com"
+                                    },
+                        "expedia":  {
+                                        "ativo":  false,
+                                        "api_url":  "https://api.expediapartnercentral.com",
+                                        "api_key":  "",
+                                        "usuario":  "",
+                                        "senha":  "",
+                                        "comissao_percentual":  18,
+                                        "auto_importar":  false,
+                                        "sincronizar_inventario":  false,
+                                        "sincronizar_tarifas":  false,
+                                        "formato_arquivo":  "xml",
+                                        "mapeamento_tipos":  {
+
+                                                             },
+                                        "ultima_sincronizacao":  ""
+                                    },
+                        "airbnb":  {
+                                       "ativo":  false,
+                                       "api_url":  "https://api.airbnb.com",
+                                       "api_key":  "",
+                                       "usuario":  "",
+                                       "senha":  "",
+                                       "comissao_percentual":  12,
+                                       "auto_importar":  false,
+                                       "sincronizar_inventario":  false,
+                                       "sincronizar_tarifas":  false,
+                                       "formato_arquivo":  "json",
+                                       "mapeamento_tipos":  {
+
+                                                            },
+                                       "ultima_sincronizacao":  ""
+                                   }
+                    },
+    "interface":  {
+                      "tema":  "claro",
+                      "idioma":  "pt-BR",
+                      "itens_por_pagina":  20
+                  }
+}

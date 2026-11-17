@@ -1,0 +1,21 @@
+{
+  "name": "NeuroTask",
+  "short_name": "NeuroTask",
+  "description": "Micro-desafios de 60 a 180 segundos com recompensas instantâneas. Transforme caos em clareza.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0b14",
+  "theme_color": "#0b0b14",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/og.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["productivity", "lifestyle"],
+  "lang": "pt-BR",
+  "dir": "ltr"
+}

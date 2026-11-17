@@ -1,0 +1,5 @@
+id_reserva_origem,nome_hospede,email,telefone,data_checkin,data_checkout,noites,adultos,criancas,tipo_quarto,qtde_quartos,valor_total,valor_diaria,moeda,comissao_percentual,comissao_valor,status,status_pagamento,metodo_pagamento,data_reserva_origem,observacoes
+BKG-NOVO-001,Amanda Souza,amanda.souza@email.com,(11)93333-2222,2026-08-01,2026-08-04,3,2,0,casal,1,210.00,70.00,BRL,15,31.50,confirmada,pago_plataforma,credito,2026-07-20,
+BKG-NOVO-002,Ricardo Lima,ricardo.lima@email.com,(21)92222-1111,2026-08-05,2026-08-07,2,1,0,solteiro,1,80.00,40.00,BRL,15,12.00,pendente,pendente,credito,2026-07-22,Preferencia quarto silencioso
+OMN-NOVO-001,Patricia Rocha,patricia.rocha@email.com,(31)91111-0000,2026-08-10,2026-08-14,4,2,1,familia,1,480.00,120.00,BRL,18,86.40,confirmada,pago_plataforma,credito,2026-07-18,Confirmacao enviada por email
+OMN-NOVO-002,Eduardo Santos,eduardo.santos@email.com,(41)90000-9999,2026-08-15,2026-08-16,1,2,0,casal,1,70.00,70.00,BRL,18,12.60,pendente,pendente,credito,2026-07-25,

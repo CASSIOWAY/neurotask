@@ -1,0 +1,22 @@
+﻿{
+    "reservas":  [
+
+                 ],
+    "status_reserva":  [
+                           "pendente",
+                           "confirmada",
+                           "checkin",
+                           "checkout",
+                           "cancelada",
+                           "no_show"
+                       ],
+    "canais":  [
+                   "direto",
+                   "booking",
+                   "expedia",
+                   "airbnb",
+                   "site",
+                   "telefone",
+                   "email"
+               ]
+}

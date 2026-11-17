@@ -212,11 +212,6 @@
 
   /* ---------------- Streak ---------------- */
 
-  function todayStr() {
-    var d = new Date();
-    return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
-  }
-
   function registerActivityDay() {
     var today = todayStr();
     if (state.lastActiveDay === today) return;
@@ -398,7 +393,7 @@
 
     var c = active.ch;
     var elapsed = (Date.now() - active.startTime) / 1000;
-    var timeBonus = Math.max(0, Math.round((c.time - elapsed) / 10));
+    var timeBonus = Math.max(0, Math.round((c.time - elapsed) / 10)); // até ~10 pts
     var streakBonus = Math.min(state.streak * 2, 10);
     var base = 10;
     var gained = base + timeBonus + streakBonus;
@@ -439,7 +434,7 @@
     show("screen-reward");
     var stage = $("#reward-stage");
     stage.classList.remove("win");
-    void stage.offsetWidth;
+    void stage.offsetWidth; // reinicia animação
     stage.classList.add("win");
 
     soundWin();

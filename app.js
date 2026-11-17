@@ -1030,6 +1030,7 @@
       if (!state.pro) {
         setTimeout(function () {
           show("screen-upgrade");
+          renderPixQr();
           toast("💡 Quer continuar girando a roleta? Ative o Pro!");
         }, 1500);
       }

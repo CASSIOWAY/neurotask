@@ -673,15 +673,527 @@
     }
   };
 
-  /* ---------------- Inicialização ---------------- */
+  /* ---------------- Onboarding / Triagem Lúdica ---------------- */
 
-  function init() {
-    renderTopbar();
-    renderChallenges();
-    animateCounters();
-    buildWheel();
-    show("screen-hero");
+  var onboardingState = {
+    age: null,
+    tests: { a: null, b: null, c: null },
+    currentStep: 0
+  };
+
+  function showOnboardingScreen(screenId) {
+    $$(".onboarding-content").forEach(function (el) { el.classList.remove("active"); });
+    var el = document.getElementById(screenId);
+    if (el) el.classList.add("active");
   }
+
+  function initOnboarding() {
+    var hasProfile = localStorage.getItem("neurotask.profile");
+    if (!hasProfile) {
+      show("screen-onboarding");
+      showOnboardingScreen("onboarding-age-selector");
+
+      $$(".age-card").forEach(function (card) {
+        card.addEventListener("click", function () {
+          $$(".age-card").forEach(function (c) { c.classList.remove("selected"); });
+          card.classList.add("selected");
+          onboardingState.age = card.getAttribute("data-age");
+          document.getElementById("btn-age-next").disabled = false;
+        });
+      });
+
+      document.getElementById("btn-age-next").addEventListener("click", function () {
+        if (!onboardingState.age) return;
+        showOnboardingScreen("onboarding-test-a");
+        startTestA();
+      });
+
+      initTestA();
+      initTestB();
+      initTestC();
+    }
+  }
+
+  /* ---------- Teste A: Atenção Seletiva (Go/No-Go) ---------- */
+  var testA = {
+    score: 0,
+    errors: 0,
+    timeLeft: 30,
+    timer: null,
+    isRunning: false
+  };
+
+  function initTestA() {
+    var container = document.getElementById("game-a-container");
+    var cells = [];
+    for (var i = 0; i < 16; i++) {
+      var cell = document.createElement("div");
+      cell.className = "game-cell";
+      cell.dataset.index = i;
+      cell.addEventListener("click", function () { handleCellA(this); });
+      container.appendChild(cell);
+      cells.push(cell);
+    }
+    testA.cells = cells;
+  }
+
+  function startTestA() {
+    testA.score = 0;
+    testA.errors = 0;
+    testA.timeLeft = 30;
+    testA.isRunning = true;
+    document.getElementById("test-a-score").textContent = "0";
+    document.getElementById("test-a-errors").textContent = "0";
+    document.getElementById("test-a-time").textContent = "30";
+    document.getElementById("btn-test-a-next").disabled = true;
+
+    testA.timer = setInterval(function () {
+      testA.timeLeft--;
+      document.getElementById("test-a-time").textContent = testA.timeLeft;
+      if (testA.timeLeft <= 0) {
+        clearInterval(testA.timer);
+        testA.isRunning = false;
+        endTestA();
+      }
+    }, 1000);
+
+    spawnTargetA();
+  }
+
+  function spawnTargetA() {
+    if (!testA.isRunning) return;
+    testA.cells.forEach(function (c) {
+      c.className = "game-cell";
+      c.onclick = null;
+    });
+
+    var idx = Math.floor(Math.random() * testA.cells.length);
+    var cell = testA.cells[idx];
+    var type = Math.random();
+
+    if (type < 0.4) {
+      cell.classList.add("target");
+      cell.textContent = "🟢";
+      cell.onclick = function () {
+        testA.score++;
+        document.getElementById("test-a-score").textContent = testA.score;
+        cell.classList.add("clicked");
+        setTimeout(spawnTargetA, 400);
+      };
+    } else if (type < 0.7) {
+      cell.classList.add("distractor");
+      cell.textContent = "🔴";
+      cell.onclick = function () {
+        testA.errors++;
+        document.getElementById("test-a-errors").textContent = testA.errors;
+        cell.classList.add("wrong");
+        setTimeout(function () { cell.classList.remove("wrong"); cell.className = "game-cell"; cell.onclick = null; }, 400);
+        setTimeout(spawnTargetA, 400);
+      };
+    } else {
+      cell.classList.add("distractor-shape");
+      cell.textContent = "⬛";
+      cell.onclick = function () {
+        testA.errors++;
+        document.getElementById("test-a-errors").textContent = testA.errors;
+        cell.classList.add("wrong");
+        setTimeout(function () { cell.classList.remove("wrong"); cell.className = "game-cell"; cell.onclick = null; }, 400);
+        setTimeout(spawnTargetA, 400);
+      };
+    }
+  }
+
+  function handleCellA(cell) {
+    if (cell.classList.contains("target")) {
+      testA.score++;
+      document.getElementById("test-a-score").textContent = testA.score;
+    } else {
+      testA.errors++;
+      document.getElementById("test-a-errors").textContent = testA.errors;
+    }
+  }
+
+  function endTestA() {
+    testA.isRunning = false;
+    document.getElementById("btn-test-a-next").disabled = false;
+    onboardingState.tests.a = {
+      score: testA.score,
+      errors: testA.errors,
+      timeLeft: testA.timeLeft
+    };
+  }
+
+  /* ---------- Teste B: Memória de Trabalho ---------- */
+  var testB = {
+    level: 1,
+    sequence: [],
+    currentIndex: 0,
+    userSequence: [],
+    isShowing: false,
+    attempts: 1
+  };
+
+  function initTestB() {
+    var grid = document.getElementById("grid-b");
+    for (var i = 0; i < 9; i++) {
+      var cell = document.createElement("div");
+      cell.className = "grid-cell";
+      cell.dataset.index = i;
+      cell.addEventListener("click", function () { handleCellB(parseInt(this.dataset.index)); });
+      grid.appendChild(cell);
+    }
+    testB.cells = grid.querySelectorAll(".grid-cell");
+  }
+
+  function startTestB() {
+    testB.level = 1;
+    testB.attempts = 1;
+    testB.userSequence = [];
+    document.getElementById("test-b-level").textContent = "1";
+    document.getElementById("test-b-attempts").textContent = "1";
+    document.getElementById("grid-b-controls").style.display = "none";
+    document.getElementById("btn-test-b-next").disabled = true;
+    runTestBSequence();
+  }
+
+  function runTestBSequence() {
+    testB.sequence = [];
+    for (var i = 0; i < Math.min(3 + testB.level, 9); i++) {
+      testB.sequence.push(Math.floor(Math.random() * 9));
+    }
+    testB.currentIndex = 0;
+    testB.isShowing = true;
+    testB.cells.forEach(function (c) { c.classList.remove("active"); c.style.cursor = "default"; });
+
+    var i = 0;
+    var interval = setInterval(function () {
+      if (i >= testB.sequence.length) {
+        clearInterval(interval);
+        testB.isShowing = false;
+        testB.cells.forEach(function (c) { c.style.cursor = "pointer"; });
+        document.getElementById("grid-b-controls").style.display = "block";
+        testB.userSequence = [];
+        return;
+      }
+      var cellIdx = testB.sequence[i];
+      testB.cells[cellIdx].classList.add("active");
+      setTimeout(function () {
+        testB.cells[cellIdx].classList.remove("active");
+      }, 600);
+      i++;
+    }, 900);
+  }
+
+  function handleCellB(index) {
+    if (testB.isShowing) return;
+    testB.userSequence.push(index);
+    testB.cells[index].classList.add("selected");
+    setTimeout(function () { testB.cells[index].classList.remove("selected"); }, 300);
+
+    if (testB.userSequence.length === testB.sequence.length) {
+      var correct = testB.userSequence.every(function (v, idx) { return v === testB.sequence[idx]; });
+      if (correct) {
+        testB.level++;
+        document.getElementById("test-b-level").textContent = testB.level;
+        setTimeout(runTestBSequence, 800);
+      } else {
+        testB.attempts++;
+        document.getElementById("test-b-attempts").textContent = testB.attempts;
+        if (testB.attempts >= 3) {
+          endTestB();
+        } else {
+          setTimeout(runTestBSequence, 800);
+        }
+      }
+    }
+  }
+
+  function endTestB() {
+    testB.isShowing = false;
+    document.getElementById("btn-test-b-next").disabled = false;
+    onboardingState.tests.b = {
+      level: testB.level,
+      attempts: testB.attempts
+    };
+  }
+
+  /* ---------- Teste C: Labirinto ---------- */
+  var testC = {
+    timeLeft: 30,
+    attempts: 1,
+    timer: null,
+    isRunning: false,
+    playerPos: { x: 0, y: 0 },
+    goalPos: { x: 2, y: 2 },
+    walls: [],
+    timerId: null
+  };
+
+  function initTestC() {
+    var container = document.getElementById("maze-c");
+    container.innerHTML = "";
+    testC.walls = [];
+
+    for (var y = 0; y < 3; y++) {
+      for (var x = 0; x < 3; x++) {
+        var cell = document.createElement("div");
+        cell.className = "maze-cell";
+        cell.style.width = "32px";
+        cell.style.height = "32px";
+        cell.style.border = "2px solid var(--line)";
+        cell.style.background = "var(--bg)";
+        cell.style.display = "grid";
+        cell.style.placeItems = "center";
+        cell.style.position = "relative";
+        cell.dataset.x = x;
+        cell.dataset.y = y;
+        container.appendChild(cell);
+      }
+    }
+
+    testC.playerPos = { x: 0, y: 0 };
+    testC.goalPos = { x: 2, y: 2 };
+
+    drawMazeC();
+  }
+
+  function drawMazeC() {
+    var container = document.getElementById("maze-c");
+    var cells = container.querySelectorAll(".maze-cell");
+
+    cells.forEach(function (cell) {
+      var x = parseInt(cell.dataset.x);
+      var y = parseInt(cell.dataset.y);
+      cell.innerHTML = "";
+      cell.className = "maze-cell";
+      cell.style.background = "var(--bg)";
+
+      if (x === testC.goalPos.x && y === testC.goalPos.y) {
+        cell.innerHTML = "🏁";
+        cell.style.background = "var(--teal)";
+        cell.style.color = "#fff";
+      }
+
+      if (x === testC.playerPos.x && y === testC.playerPos.y) {
+        cell.innerHTML = "😎";
+        cell.style.background = "var(--gold)";
+      }
+
+      if (testC.walls.some(function (w) { return w.x === x && w.y === y; })) {
+        cell.style.background = "linear-gradient(135deg,#7c5cff,#00e0c6)";
+      }
+    });
+  }
+
+  function startTestC() {
+    testC.timeLeft = 30;
+    testC.attempts = 1;
+    testC.isRunning = true;
+    document.getElementById("test-c-time").textContent = "30";
+    document.getElementById("test-c-attempts").textContent = "1";
+    document.getElementById("btn-test-c-next").disabled = true;
+
+    resetMazeC();
+
+    testC.timerId = setInterval(function () {
+      testC.timeLeft--;
+      document.getElementById("test-c-time").textContent = testC.timeLeft;
+      if (testC.timeLeft <= 0) {
+        clearInterval(testC.timerId);
+        testC.isRunning = false;
+        endTestC();
+      }
+    }, 1000);
+
+    changeMazeWallsC();
+    setInterval(changeMazeWallsC, 5000);
+  }
+
+  function resetMazeC() {
+    testC.playerPos = { x: 0, y: 0 };
+    drawMazeC();
+
+    document.addEventListener("keydown", handleMazeKeys);
+  }
+
+  function handleMazeKeys(e) {
+    if (!testC.isRunning) return;
+    var x = testC.playerPos.x;
+    var y = testC.playerPos.y;
+    var nx = x, ny = y;
+
+    if (e.key === "ArrowLeft") nx--;
+    if (e.key === "ArrowRight") nx++;
+    if (e.key === "ArrowUp") ny--;
+    if (e.key === "ArrowDown") ny++;
+
+    if (nx >= 0 && nx < 3 && ny >= 0 && ny < 3) {
+      var isWall = testC.walls.some(function (w) { return w.x === nx && w.y === ny; });
+      if (!isWall) {
+        testC.playerPos = { x: nx, y: ny };
+        drawMazeC();
+
+        if (nx === testC.goalPos.x && ny === testC.goalPos.y) {
+          clearInterval(testC.timerId);
+          testC.isRunning = false;
+          document.getElementById("btn-test-c-next").disabled = false;
+          onboardingState.tests.c = {
+            timeLeft: testC.timeLeft,
+            attempts: testC.attempts
+          };
+          document.removeEventListener("keydown", handleMazeKeys);
+        }
+      }
+    }
+  }
+
+  function changeMazeWallsC() {
+    if (!testC.isRunning) return;
+    testC.walls = [];
+    var count = Math.floor(Math.random() * 3) + 1;
+    for (var i = 0; i < count; i++) {
+      var wx = Math.floor(Math.random() * 3);
+      var wy = Math.floor(Math.random() * 3);
+      if ((wx !== testC.playerPos.x || wy !== testC.playerPos.y) &&
+          (wx !== testC.goalPos.x || wy !== testC.goalPos.y)) {
+        testC.walls.push({ x: wx, y: wy });
+      }
+    }
+    drawMazeC();
+  }
+
+  function endTestC() {
+    testC.isRunning = false;
+    document.getElementById("btn-test-c-next").disabled = false;
+    onboardingState.tests.c = {
+      timeLeft: testC.timeLeft,
+      attempts: testC.attempts
+    };
+    document.removeEventListener("keydown", handleMazeKeys);
+  }
+
+  /* ---------- Algoritmo de recomendação ---------- */
+
+  function computeProfile() {
+    var tA = onboardingState.tests.a;
+    var tB = onboardingState.tests.b;
+    var tC = onboardingState.tests.c;
+
+    var attentionScore = Math.min(100, Math.round((tA.score / (tA.score + tA.errors + 1)) * 100));
+    var memoryScore = Math.min(100, Math.round((tB.level / 6) * 100));
+    var planningScore = Math.min(100, Math.round((tC.timeLeft / 30) * 100));
+
+    var avgScore = Math.round((attentionScore + memoryScore + planningScore) / 3);
+
+    var profile = {
+      age: onboardingState.age,
+      attention: attentionScore,
+      memory: memoryScore,
+      planning: planningScore,
+      overall: avgScore,
+      missions: []
+    };
+
+    if (avgScore >= 70) {
+      profile.missions.push({
+        title: "Desafio Diário Avançado",
+        icon: "🚀",
+        text: "Complete 5 micro-desafios por dia"
+      });
+    } else if (avgScore >= 40) {
+      profile.missions.push({
+        title: "Desafio Diário Padrão",
+        icon: "🎯",
+        text: "Complete 3 micro-desafios por dia"
+      });
+    } else {
+      profile.missions.push({
+        title: "Desafio Diário Suave",
+        icon: "🌱",
+        text: "Complete 1 micro-desafio por dia"
+      });
+    }
+
+    if (attentionScore < 50) {
+      profile.missions.push({
+        title: "Treinamento de Foco",
+        icon: "🎯",
+        text: "Pratique atenção plena 5 min por dia"
+      });
+    }
+
+    if (memoryScore < 50) {
+      profile.missions.push({
+        title: "Treinamento de Memória",
+        icon: "🧠",
+        text: "Jogue o jogo da memória 2x por semana"
+      });
+    }
+
+    if (planningScore < 50) {
+      profile.missions.push({
+        title: "Treinamento de Planejamento",
+        icon: "📅",
+        text: "Planeje seu dia na noite anterior"
+      });
+    }
+
+    return profile;
+  }
+
+  function renderProfile(profile) {
+    var icons = { child: "👦", teen: "🦾", adult: "🧠" };
+    var names = { child: "Explorador", teen: "Ciber-herói", adult: "Mestre da Produtividade" };
+    var descs = {
+      child: "Você é curioso e aprende rápido com brincadeiras.",
+      teen: "Seu cérebro é rápido e competitivo, perfeito para desafios.",
+      adult: "Você é focado e produtivo, valoriza eficiência."
+    };
+
+    document.getElementById("profile-icon").textContent = icons[onboardingState.age] || "🧠";
+    document.getElementById("profile-name").textContent = names[onboardingState.age] || "Usuário";
+    document.getElementById("profile-desc").textContent = descs[onboardingState.age] || "";
+    document.getElementById("stat-attention").textContent = profile.attention + "%";
+    document.getElementById("stat-memory").textContent = profile.memory + "%";
+    document.getElementById("stat-planning").textContent = profile.planning + "%";
+    document.getElementById("mission-text").textContent = profile.missions[0].text;
+    document.getElementById("mission-emoji").textContent = profile.missions[0].icon;
+  }
+
+  /* ---------- Finais ---------- */
+
+  document.getElementById("btn-test-a-next").addEventListener("click", function () {
+    showOnboardingScreen("onboarding-test-b");
+    startTestB();
+  });
+
+  document.getElementById("btn-test-b-next").addEventListener("click", function () {
+    showOnboardingScreen("onboarding-test-c");
+    startTestC();
+  });
+
+  document.getElementById("btn-test-c-next").addEventListener("click", function () {
+    var profile = computeProfile();
+    localStorage.setItem("neurotask.profile", JSON.stringify(profile));
+    renderProfile(profile);
+    showOnboardingScreen("onboarding-result");
+  });
+
+  document.getElementById("btn-profile-done").addEventListener("click", function () {
+    show("screen-hero");
+  });
+
+  document.getElementById("btn-profile-edit").addEventListener("click", function () {
+    showOnboardingScreen("onboarding-age-selector");
+  });
+
+  /* ---------------- Inicialização atualizada ---------------- */
+
+  var originalInit = init;
+  init = function () {
+    originalInit();
+    initOnboarding();
+  };
 
   document.addEventListener("DOMContentLoaded", init);
 })();

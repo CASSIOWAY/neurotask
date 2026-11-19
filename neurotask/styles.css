@@ -732,3 +732,210 @@ h1,h2,h3,.brand-name,.pc-val,.timer-num{font-family:"Space Grotesk","Inter",sans
   .level-info{flex-direction:column;align-items:flex-start;gap:6px}
   .level-points{margin-left:0}
 }
+
+/* ============================================================
+   TRIAGEM LÚDICA — Onboarding
+   ============================================================ */
+.onboarding-container{
+  max-width:720px;margin:0 auto;padding:20px;
+}
+.onboarding-header{
+  text-align:center;margin-bottom:30px;
+}
+.onboarding-header .step-indicator{
+  display:flex;justify-content:center;gap:12px;margin-bottom:16px;
+}
+.step{
+  width:34px;height:34px;border-radius:50%;background:var(--card-2);
+  border:2px solid var(--line);color:var(--muted);display:grid;place-items:center;
+  font-weight:800;font-size:.85rem;
+}
+.step.active{
+  border-color:var(--hl,#7c5cff);color:var(--hl,#7c5cff);box-shadow:0 0 12px rgba(124,92,255,.35);
+}
+.onboarding-content{
+  display:none;animation:fadeIn .4s ease;
+}
+.onboarding-content.active{display:block;}
+.onboarding-content h3{
+  text-align:center;font-size:1.3rem;margin-bottom:6px;
+}
+.onboarding-content p{color:var(--muted);text-align:center;margin-bottom:24px;line-height:1.7}
+
+/* ---- Idade ---- */
+.age-options{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;
+}
+.age-card{
+  border:2px solid var(--line);border-radius:var(--r);padding:24px;text-align:center;
+  background:var(--card);cursor:pointer;transition:.2s;position:relative;
+}
+.age-card:hover{border-color:var(--hl,#7c5cff);transform:translateY(-4px);}
+.age-card.selected{border-color:var(--hl,#7c5cff);background:rgba(124,92,255,.12);}
+.age-card .age-icon{font-size:2.4rem;display:block;margin-bottom:12px;}
+.age-card h3{margin:0 0 6px;font-size:1.1rem;}
+.age-card p{color:var(--muted);font-size:.85rem;margin-bottom:8px;}
+.age-desc{display:block;font-size:.75rem;color:var(--muted);}
+
+/* ---- Testes ---- */
+.test-header{
+  display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;
+}
+.test-badge{
+  background:var(--grad);color:#0b0b14;padding:4px 12px;border-radius:20px;
+  font-weight:800;font-size:.75rem;
+}
+.test-name{color:var(--muted);font-size:.9rem;}
+.test-instruction{
+  text-align:center;margin-bottom:24px;padding:20px;background:var(--card);
+  border-radius:var(--r);border:1px solid var(--line);
+}
+.test-instruction p{margin:0 0 8px;}
+.test-instruction .highlight-green{color:var(--teal);font-weight:700;}
+.test-area{min-height:320px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
+.score-board{
+  display:flex;gap:24px;color:var(--muted);font-size:.85rem;margin-bottom:16px;
+}
+
+/* Teste A - Roleta de atenção */
+.game-area{
+  width:320px;height:320px;display:flex;flex-wrap:wrap;gap:8px;
+  background:var(--card);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);
+}
+.game-cell{
+  width:60px;height:60px;border-radius:50%;border:2px solid var(--line);
+  display:grid;place-items:center;cursor:pointer;font-size:1.4rem;transition:.15s;
+  background:var(--bg);
+}
+.game-cell.target{background:var(--teal);color:#fff;}
+.game-cell.distractor{background:var(--pink);color:#fff;}
+.game-cell.distractor-shape{background:var(--pink);color:#fff;border-radius:0;}
+.game-cell:hover{filter:brightness(1.15);}
+.game-cell.clicked{opacity:.5;filter:grayscale(.7);cursor:default;}
+.game-cell.wrong{background:#ff4d4d;animation:wrongShake .4s ease;}
+@keyframes wrongShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+/* Teste B - Memória */
+.grid-memory{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+  width:240px;height:240px;background:var(--card);
+  border-radius:var(--r);padding:16px;box-shadow:var(--shadow);
+}
+.grid-cell{
+  width:60px;height:60px;border-radius:10px;background:var(--bg);
+  border:2px solid var(--line);display:grid;place-items:center;cursor:pointer;
+  transition:.2s;font-size:1.2rem;
+}
+.grid-cell:hover{border-color:var(--teal);}
+.grid-cell.active{background:var(--teal);color:#fff;box-shadow:0 0 20px rgba(0,224,198,.4);}
+.grid-cell.selected{background:var(--pink);color:#fff;}
+.grid-cell.correct{background:var(--teal);color:#fff;}
+.grid-cell.wrong{background:#ff4d4d;color:#fff;}
+.grid-controls{margin-top:16px;text-align:center;}
+.grid-note{font-size:.85rem;color:var(--muted);margin-bottom:8px;}
+
+/* Teste C - Labirinto */
+.maze-container{
+  width:300px;height:300px;background:var(--card);
+  border-radius:var(--r);position:relative;overflow:hidden;
+  box-shadow:var(--shadow);border:2px solid var(--line);
+}
+.maze-wall{
+  position:absolute;background:linear-gradient(135deg,#7c5cff,#00e0c6);
+  border-radius:4px;transition:all .3s ease;
+}
+.maze-player{
+  position:absolute;width:20px;height:20px;background:var(--gold);
+  border-radius:50%;box-shadow:0 0 20px rgba(255,201,77,.6);
+  z-index:10;transition:transform .15s;
+}
+.maze-goal{
+  position:absolute;width:24px;height:24px;background:var(--teal);
+  border-radius:50%;box-shadow:0 0 20px rgba(0,224,198,.6);
+  z-index:9;display:grid;place-items:center;font-size:1.2rem;
+}
+.maze-hint{color:var(--muted);font-size:.85rem;text-align:center;margin-top:10px;}
+
+/* Resultado */
+.profile-card{
+  background:linear-gradient(135deg,rgba(124,92,255,.12),rgba(0,224,198,.1));
+  border:1px solid rgba(124,92,255,.25);border-radius:var(--r);
+  padding:28px;text-align:center;margin-bottom:24px;
+}
+.profile-icon{font-size:3rem;display:block;margin-bottom:12px;}
+.profile-card h3{margin:0 0 8px;font-size:1.5rem;}
+.profile-card p{color:var(--muted);font-size:.9rem;margin-bottom:16px;}
+.profile-stats{
+  display:flex;justify-content:center;gap:24px;margin-bottom:20px;
+}
+.stat{text-align:center;}
+.stat-label{display:block;color:var(--muted);font-size:.8rem;}
+.stat-value{display:block;font-size:1.4rem;font-weight:700;color:var(--txt);}
+.profile-mission{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:20px;margin-bottom:20px;
+}
+.profile-mission h4{margin:0 0 10px;color:var(--muted);font-size:.85rem;text-transform:uppercase;letter-spacing:1px;}
+.mission-card{
+  display:flex;align-items:center;gap:12px;background:var(--grad);
+  padding:14px;border-radius:var(--r);color:#0b0b14;font-weight:600;
+}
+.mission-emoji{font-size:1.6rem;}
+.mission-text{flex:1;}
+.onboarding-actions{
+  display:flex;gap:12px;justify-content:center;
+}
+
+/* Temas visuais por perfil */
+.theme-child{--accent:#ff6b6b;--bg-gradient:linear-gradient(135deg,#ff9a9e,#fecfef);}
+.theme-teen{--accent:#7c5cff;--bg-gradient:linear-gradient(135deg,#667eea,#764ba2);}
+.theme-adult{--accent:#00e0c6;--bg-gradient:linear-gradient(135deg,#1a2a6c,#b21f1f);}
+
+/* Aplicar tema ao body quando selecionado */
+body.theme-child{--accent:#ff6b6b;}
+body.theme-teen{--accent:#7c5cff;}
+body.theme-adult{--accent:#00e0c6;}
+
+.fadeIn{animation:fadeIn .4s ease;}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+@media (max-width:560px){
+  .onboarding-container{padding:12px;}
+  .age-options{grid-template-columns:1fr;}
+  .game-area{width:260px;height:260px;}
+  .game-cell{width:48px;height:48px;font-size:1.2rem;}
+  .grid-memory{width:200px;height:200px;}
+  .grid-cell{width:48px;height:48px;font-size:1rem;}
+  .maze-container{width:240px;height:240px;}
+}
+
+/* ---- Dicas no painel ---- */
+.step-card:hover{border-color:var(--teal);transform:translateY(-2px)}
+.step-card.done{opacity:.7;filter:grayscale(.4)}
+.step-card.locked{opacity:.5;filter:grayscale(1);cursor:not-allowed}
+.step-num{
+  width:28px;height:28px;border-radius:50%;background:var(--grad);color:#0b0b14;
+  display:grid;place-items:center;font-weight:800;font-size:.85rem;flex:none;
+}
+.step-card.done .step-num{background:var(--teal)}
+.step-ico{font-size:1.5rem;width:40px;display:inline-block;text-align:center}
+.step-info{flex:1;min-width:0}
+.step-title{font-weight:600;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.step-desc{color:var(--muted);font-size:.8rem;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.step-time{font-size:.75rem;color:var(--teal);font-weight:700;flex:none}
+.step-ok{color:var(--teal);font-weight:700;flex:none}
+.step-lock{color:var(--gold);font-weight:700;flex:none}
+.stage-complete{
+  margin-top:12px;padding:12px;background:rgba(0,224,198,.12);
+  border:1px solid rgba(0,224,198,.4);border-radius:10px;color:var(--teal);
+  font-weight:700;font-size:.88rem;text-align:center;
+}
+.stage-next{margin-top:10px;color:var(--muted);font-size:.82rem;text-align:center}
+
+@media (max-width:640px){
+  .compare{grid-template-columns:1fr}
+  .cd-time{font-size:1.9rem}
+  .plan-price{font-size:1.6rem}
+  .level-info{flex-direction:column;align-items:flex-start;gap:6px}
+  .level-points{margin-left:0}
+}
